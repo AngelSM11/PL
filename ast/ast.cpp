@@ -93,6 +93,28 @@ double lp::VariableNode::evaluateNumber()
 	return result;
 }
 
+int lp::VariableNode::evaluateNumberE() 
+{ 
+	int result = 0;
+
+	if (this->getType() == NUMBER)
+	{
+		// Get the identifier in the table of symbols as NumericVariable
+		lp::NumericVariable *var = (lp::NumericVariable *) table.getSymbol(this->_id);
+
+		// Copy the value of the NumericVariable
+		result = var->getValue();
+	}
+	else
+	{
+		warning("Runtime error in evaluateNumber(): the variable is not numeric", 
+				   this->_id);
+	}
+
+	// Return the value of the NumericVariable
+	return result;
+}
+
 
 bool lp::VariableNode::evaluateBool() 
 { 
@@ -485,6 +507,52 @@ double lp::DivisionNode::evaluateNumber()
   return result;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+void lp::DivisionENode::printAST()
+{
+  std::cout << "DivisionNode: //" << std::endl;
+  std::cout << "\t"; 
+	this->_left->printAST();
+	std::cout << "\t"; 
+	this->_right->printAST();
+}
+
+double lp::DivisionENode::evaluateNumber() 
+{
+	double result = 0.0;
+	
+
+	// Ckeck the types of the expressions
+	if (this->getType() == NUMBER)
+	{
+		double leftNumber, rightNumber;
+		double  parteEntera;
+		leftNumber = this->_left->evaluateNumber();
+		rightNumber = this->_right->evaluateNumber();
+	
+		// The divisor is not zero
+		
+    	if(std::abs(rightNumber) > ERROR_BOUND)
+		{
+				result = leftNumber / rightNumber;
+				
+				modf(result, &parteEntera);
+				result=parteEntera;
+		}
+		else
+		{
+			warning("Runtime error", "Division by zero");
+		}
+	}
+	else
+	{
+		warning("Runtime error: the expressions are not numeric for", "Division");
+	}
+
+  return result;
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -1014,7 +1082,7 @@ bool lp::NotNode::evaluateBool()
 
 void lp::AssignmentStmt::printAST() 
 {
-  std::cout << "assignment_node: ="  << std::endl;
+  std::cout << "assignment_node: :="  << std::endl;
   std::cout << "\t";
   std::cout << this->_id << std::endl;
   std::cout << "\t";

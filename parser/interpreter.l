@@ -151,6 +151,7 @@ IDENTIFIER  {LETTER}({LETTER}|{DIGIT})*
 
 "*"	    { return MULTIPLICATION; } 	/* NEW in example 3 */
 "/"     { return DIVISION; } 		/* NEW in example 3 */
+"//"     { return DIVISION_ENTERA; } 		/*PLFINAL*/
 
 "("     { return LPAREN; } 			/* NEW in example 3 */
 ")"	    { return RPAREN; } 			/* NEW in example 3 */
@@ -186,7 +187,6 @@ IDENTIFIER  {LETTER}({LETTER}|{DIGIT})*
 
 "}"		{ return RIGHTCURLYBRACKET; }	/* NEW in example 17 */
 
-"/"     { return DIVISION_ENTERA; } 		/*PLFINAL*/
 
 <<EOF>> { /* The interpreter finishes when finds the end of file character */
 		/*  PLACE(24,10);

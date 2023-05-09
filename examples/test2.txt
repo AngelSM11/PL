@@ -1,19 +1,28 @@
-a = b = PI;
+a := b := PI;
 
 print a;
 print b;
 print PI;
 
-dato = 2;
+dato := 2;
 print dato;
 
-dato = true;
+dato := true;
 print dato;
 
 
-dato = 9;
+dato := 9;
 print dato;
 
+dato := 7;
+dato1 := 2;
+d := dato//dato1;
+print d;
+
+dato := 7;
+dato1 := 2;
+d := dato/dato1;
+print d;
 
 print 3> PI;
 

@@ -57,6 +57,11 @@ namespace lp
 		return 0.0;
 	}		
 
+	virtual int evaluateNumberE()
+	{
+		return 0;
+	}	
+
 
 	/*!	
 		\brief   Evaluate the expression as BOOL
@@ -118,6 +123,7 @@ class VariableNode : public ExpNode
 		\sa		   printAST
 	*/
 	  double evaluateNumber();
+	  int evaluateNumberE();
 
 	/*!	
 		\brief   Evaluate the Variable as BOOL
@@ -708,6 +714,44 @@ class DivisionNode : public NumericOperatorNode
 	\sa		   printAST
 */
   double evaluateNumber();
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+/*!	
+  \class   DivisionENode
+  \brief   Definition of atributes and methods of DivisionENode class
+  \note    DivisionNode Class publicly inherits from NumericOperatorNode class 
+		   and adds its own printAST and evaluate functions
+*/
+class DivisionENode : public NumericOperatorNode 
+{
+  public:
+/*!		
+	\brief Constructor of DivisionNode uses NumericOperatorNode's constructor as members initializer
+	\param L: pointer to ExpNode
+	\param R: pointer to ExpNode
+	\post  A new DivisionNodeE is created with the parameter
+*/
+  DivisionENode(ExpNode *L, ExpNode *R): NumericOperatorNode(L,R) 
+  {
+		// Empty
+  }
+/*!
+	\brief   printAST the DivisionENode
+	\return  void
+	\sa		   evaluateNumber
+*/
+  void printAST();
+
+/*!	
+	\brief   Evaluate the DivisionENode
+	\return  double
+	\sa		   printAST
+*/
+  double evaluateNumber();
+  
 };
 
 
