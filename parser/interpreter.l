@@ -61,7 +61,9 @@ NUMBER1 {DIGIT}+\.?
 
 NUMBER2 {DIGIT}*\.{DIGIT}+
 
-IDENTIFIER  {LETTER}({LETTER}|{DIGIT})*
+NUMBER3 {NUMBER2}[eE][+\-]{DIGIT}+
+
+IDENTIFIER  {LETTER}(_?({LETTER}|{DIGIT}))*
 
 /* NEW in example 3 */
 /* STATE  */
@@ -92,7 +94,7 @@ IDENTIFIER  {LETTER}({LETTER}|{DIGIT})*
 			return COMMA;
 		}
 
-{NUMBER1}|{NUMBER2}  {
+{NUMBER1}|{NUMBER2}|{NUMBER3} {
 					  /* MODIFIED in example 4 */
 					  /* Conversion of type and sending of the numerical value to the parser */
 					   yylval.number = atof(yytext); 
