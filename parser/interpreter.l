@@ -161,7 +161,7 @@ IDENTIFIER  {LETTER}({LETTER}|{DIGIT})*
 
 "^"	    { return POWER; }			/* NEW in example 5 */
 
-"=" 	{ return ASSIGNMENT; }		/* NEW in example 7 */
+":=" 	{ return ASSIGNMENT; }		/* NEW in example 7 */
 
 
 "=="	{ return EQUAL; }			/* NEW in example 15 */
@@ -186,6 +186,7 @@ IDENTIFIER  {LETTER}({LETTER}|{DIGIT})*
 
 "}"		{ return RIGHTCURLYBRACKET; }	/* NEW in example 17 */
 
+"/"     { return DIVISION_ENTERA; } 		/*PLFINAL*/
 
 <<EOF>> { /* The interpreter finishes when finds the end of file character */
 		/*  PLACE(24,10);
