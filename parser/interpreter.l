@@ -65,12 +65,30 @@ NUMBER3 {NUMBER2}[eE][+\-]{DIGIT}+
 
 IDENTIFIER  {LETTER}(_?({LETTER}|{DIGIT}))*
 
+CADENA		"'"([^']|"\\\'")*"'"?
+
+comentario_simple \#.*
+
 /* NEW in example 3 */
 /* STATE  */
-%x ERROR
+%x ERROR Q1
 
 /*! \name REGULAR EXPRESSIONS  */
 %%
+
+"<<"    {yymore();
+        BEGIN(Q1);
+        }
+<Q1>">>" {BEGIN 0;
+          printf("\n Comentario : %s \n",yytext);
+		  return COMENTARIO;
+        }
+
+<Q1>">" {BEGIN 0;
+          printf("\n Comentario multiple mal escrito: %s \n",yytext);
+        }
+<Q1>.|\n {yymore();}
+
 
 [ \t] 	{ ; }    /* skip white space and tabular */
 
@@ -93,6 +111,14 @@ IDENTIFIER  {LETTER}(_?({LETTER}|{DIGIT}))*
 			/* NEW in example 14 */
 			return COMMA;
 		}
+
+{CADENA} {
+	return CADENA;
+}
+
+{comentario_simple}	{
+	return COMENTARIOSIMPLE;
+}
 
 {NUMBER1}|{NUMBER2}|{NUMBER3} {
 					  /* MODIFIED in example 4 */
@@ -188,6 +214,38 @@ IDENTIFIER  {LETTER}(_?({LETTER}|{DIGIT}))*
 "{"		{ return LETFCURLYBRACKET; } 	/* NEW in example 17 */
 
 "}"		{ return RIGHTCURLYBRACKET; }	/* NEW in example 17 */
+
+"read" {return READ; }
+"read_string"	{return READSTRING;}
+
+"print" {return PRINT; }
+"print_string"	{return PRINTSTRING;}
+
+"if"	{return IF;}
+"then"	{return THEN;}
+"else"	{return ELSE;}
+"endif"	{return ENDIF;}
+
+"while" {return WHILE;}
+"do"	{return DO;}
+"end_while"	{return ENDWHILE;}
+
+
+"repeat"	{return REPEAT;}
+"until"		{return UNTIL;}
+
+"for"		{return FOR;}
+"from"		{return FROM;}
+"to"		{return TO;}
+"step"		{return STEP;}
+"end_for"	{return ENDFOR;}
+
+"case"	{return CASE;}
+"value" {return VALUE;}
+"default"	{return DEFAULT;}
+"end_case"	{return ENDCASE;}
+
+"clear_screen"	{std::cout << CLEAR_SCREEN;}
 
 
 <<EOF>> { /* The interpreter finishes when finds the end of file character */

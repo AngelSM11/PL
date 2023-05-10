@@ -172,6 +172,8 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 %token SEMICOLON
 /*******************************************/
 
+%token CADENA COMENTARIO COMENTARIOSIMPLE
+
 /* NEW in example 17: IF, ELSE, WHILE */
 %token PRINT READ IF ELSE WHILE 
 

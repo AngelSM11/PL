@@ -50,40 +50,65 @@ extern int yydebug;
   enum yytokentype
   {
     SEMICOLON = 258,
-    PRINT = 259,
-    READ = 260,
-    IF = 261,
-    ELSE = 262,
-    WHILE = 263,
-    LETFCURLYBRACKET = 264,
-    RIGHTCURLYBRACKET = 265,
-    ASSIGNMENT = 266,
-    COMMA = 267,
-    NUMBER = 268,
-    BOOL = 269,
-    VARIABLE = 270,
-    UNDEFINED = 271,
-    CONSTANT = 272,
-    BUILTIN = 273,
-    OR = 274,
-    AND = 275,
-    GREATER_OR_EQUAL = 276,
-    LESS_OR_EQUAL = 277,
-    GREATER_THAN = 278,
-    LESS_THAN = 279,
-    EQUAL = 280,
-    NOT_EQUAL = 281,
-    NOT = 282,
-    PLUS = 283,
-    MINUS = 284,
-    MULTIPLICATION = 285,
-    DIVISION = 286,
-    DIVISION_ENTERA = 287,
-    MODULO = 288,
-    LPAREN = 289,
-    RPAREN = 290,
-    UNARY = 291,
-    POWER = 292
+    CADENA = 259,
+    COMENTARIO = 260,
+    COMENTARIOSIMPLE = 261,
+    PRINT = 262,
+    READ = 263,
+    IF = 264,
+    ELSE = 265,
+    WHILE = 266,
+    LETFCURLYBRACKET = 267,
+    RIGHTCURLYBRACKET = 268,
+    ASSIGNMENT = 269,
+    COMMA = 270,
+    NUMBER = 271,
+    BOOL = 272,
+    VARIABLE = 273,
+    UNDEFINED = 274,
+    CONSTANT = 275,
+    BUILTIN = 276,
+    OR = 277,
+    AND = 278,
+    GREATER_OR_EQUAL = 279,
+    LESS_OR_EQUAL = 280,
+    GREATER_THAN = 281,
+    LESS_THAN = 282,
+    EQUAL = 283,
+    NOT_EQUAL = 284,
+    NOT = 285,
+    PLUS = 286,
+    MINUS = 287,
+    MULTIPLICATION = 288,
+    DIVISION = 289,
+    DIVISION_ENTERA = 290,
+    MODULO = 291,
+    LPAREN = 292,
+    RPAREN = 293,
+    UNARY = 294,
+    POWER = 295,
+    
+    READSTRING = 296,
+    
+    PRINTSTRING = 297,
+    
+    THEN = 298,
+    
+    ENDIF = 299,
+    
+    DO = 300,
+    REPEAT = 301,
+    UNTIL = 302,
+    FOR = 303,
+    FROM = 304,
+    TO = 305,
+    STEP = 306,
+    ENDFOR = 307,
+    CASE = 308,
+    VALUE = 309,
+    DEFAULT =310,
+    ENDCASE = 311,
+    ENDWHILE = 312
   };
 #endif
 
@@ -102,7 +127,7 @@ union YYSTYPE
   lp::Statement *st;				 /* NEW in example 16 */
   lp::AST *prog;					 /* NEW in example 16 */
 
-#line 106 "interpreter.tab.h"
+#line 109 "interpreter.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
