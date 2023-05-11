@@ -1436,6 +1436,85 @@ void lp::WhileStmt::evaluate()
 
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+// for
+
+void lp::ForStmt::printAST() 
+{
+
+    std::cout << "ForStmt: " << std::endl;
+    std::cout << this->_iterator;
+
+    if (this->_step != NULL)
+        this->_step->printAST();
+
+    this->_end->printAST();
+
+    this->_statement->printAST();
+    std::cout << std::endl;
+}
+
+
+void lp::ForStmt::evaluate() 
+{
+  // While the condition is true. the body is run 
+	double start, end, step = 1;
+    bool error = false;
+
+    /**********************
+	 * CHECKING THE TYPES *
+	 *********************/
+
+    //We use short circuit evaluation to avoid having 2 different if statements depending on wether the step is defined
+    if ((this->_start->getType() != NUMBER) || (this->_end->getType() != NUMBER) || ((this->_step != NULL) && (this->_step->getType() != NUMBER))) {
+        warning("Runtime error: incompatible type of expression for ", "For");
+        return;
+    }
+    start = this->_start->evaluateNumber();
+    end = this->_end->evaluateNumber();
+    step = (this->_step != NULL) ? this->_step->evaluateNumber() : 1.0;
+
+    /******************
+	 * ERROR HANDLING *
+	 *****************/
+
+    //Step taking the variable away from end (would cause double overflow and lost of precision)
+    if (((start > end) && (step > 0)) || ((start < end) && (step < 0))) {
+        warning("Runtime error: step would cause overflow for", "For");
+        error = true;
+    }
+
+    //Step equal to 0 (infinite loop)
+    if (std::abs(step) < ERROR_BOUND) {
+        ;
+    }
+
+    /*******************
+	 * ACCESS TO TABLE *
+	 ******************/
+
+    if (table.lookupSymbol(this->_iterator))
+        table.eraseSymbol(this->_iterator);
+
+    NumericVariable* var = new NumericVariable(this->_iterator, VARIABLE, NUMBER, start); //Creating and initializing the loop variable
+
+    table.installSymbol(var); //Adding it to symbol table
+
+    if (step >= 0) {
+        while (var->getValue() <= end) {
+            this->_statement->evaluate();
+            var->setValue(var->getValue() + step);
+        }
+    } else {
+        while (var->getValue() >= end) {
+            this->_statement->evaluate();
+            var->setValue(var->getValue() + step);
+        }
+    }
+
+}
+
 
 
 

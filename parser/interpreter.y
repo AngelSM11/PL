@@ -159,7 +159,7 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 %type <stmts> stmtlist
 
 // New in example 17: if, while, block
-%type <st> stmt asgn print read if while block
+%type <st> stmt asgn print read if while block for
 
 %type <prog> program
 
@@ -172,10 +172,16 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 %token SEMICOLON
 /*******************************************/
 
-%token CADENA COMENTARIO COMENTARIOSIMPLE
+%token PRINT PRINTSTRING
 
-/* NEW in example 17: IF, ELSE, WHILE */
-%token PRINT READ IF ELSE WHILE 
+/* AÑADIDOS NUEVOS*/
+%token READ READSTRING
+%token WRITE WRITESTRING
+%token IF THEN ELSE ENDIF
+%token WHILE DO ENDWHILE
+%token REPEAT UNTIL FOR FROM ENDFOR STEP TO 
+%token CASE VALUE DEFAULT ENDCASE
+%token CADENA COMENTARIO COMENTARIOSIMPLE
 
 /* NEW in example 17 */
 %token LETFCURLYBRACKET RIGHTCURLYBRACKET
@@ -317,6 +323,11 @@ stmt: SEMICOLON  /* Empty statement: ";" */
 		// Default action
 		// $$ = $1;
 	 }
+	| for
+	{
+		// Default action
+		// $$ = $1;
+	} 
 	/*  NEW in example 17 */
 	| block 
 	 {
@@ -372,6 +383,23 @@ while:  WHILE controlSymbol cond stmt
 			control--;
     }
 ;
+
+
+for:	FOR controlSymbol VARIABLE FROM exp TO exp DO stmt ENDFOR
+		{
+			$$ = new lp::ForStmt($3, $5, $7, $9);
+
+			control --;
+		}
+	|   FOR controlSymbol VARIABLE FROM exp TO exp STEP exp DO stmt ENDFOR
+		{
+			$$ = new lp::ForStmt($3, $5, $7, $9, $11);
+
+			control --;
+		}
+;
+
+
 
 	/*  NEW in example 17 */
 cond: 	LPAREN exp RPAREN

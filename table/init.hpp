@@ -71,10 +71,23 @@ static struct {
 	      int token;
 	      } keyword[] = { 
 	                    {"print", PRINT},
+						{"print_string", PRINTSTRING},
 	                    {"read",  READ},
+						{"read_string",  READSTRING},
 						{"if",	  IF},   	// NEW in example 17
+						{"then",	 THEN},
 						{"else",  ELSE}, 	// NEW in example 17
 						{"while", WHILE},	// NEW in example 17
+						{"do",	DO},
+						{"for", FOR},
+    					{"from", FROM},
+    					{"to", TO},
+    					{"step", STEP},
+						{"repeat", REPEAT},
+						{"until", UNTIL},
+						{"case", CASE},
+						{"value",	VALUE},
+						{"default", DEFAULT},
 	                    {"",      0}
 	                   };
 

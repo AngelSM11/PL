@@ -1719,7 +1719,61 @@ class WhileStmt : public Statement
   void evaluate();
 };
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+//FOR
 
+/*!	
+  \class   ForStmt
+  \brief   Definition of atributes and methods of ForStmt class
+  \note    ForStmt Class publicly inherits from Statement class 
+		       and adds its own printAST and evaluate functions
+*/
+class ForStmt : public Statement 
+{
+ private:
+    char* _iterator;
+    ExpNode *_start, *_step, *_end;
+    Statement* _statement;
+
+  public:
+/*!		
+	\brief Constructor of  ForStmt
+	\param condition: ExpNode of the condition
+	\param statement: Statement of the body of the loop 
+	\post  A new ForStmt is created with the parameters
+*/
+    ForStmt(char* iterator, ExpNode* start, ExpNode* end, Statement* statement)
+    {
+        this->_iterator = iterator;
+        this->_start = start;
+        this->_end = end;
+        this->_statement = statement;
+    }
+
+    ForStmt(char* iterator, ExpNode* start, ExpNode* end, ExpNode* step, Statement* statement)
+    {
+        this->_iterator = iterator;
+        this->_start = start;
+        this->_step = step;
+        this->_end = end;
+        this->_statement = statement;
+    }
+
+/*!
+	\brief   Print the AST for ForStmt
+	\return  void
+	\sa		   evaluate
+*/
+  void printAST();
+
+/*!	
+	\brief   Evaluate the ForStmt
+	\return  void
+	\sa	   	 printAST
+*/
+  void evaluate();
+};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
