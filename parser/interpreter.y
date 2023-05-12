@@ -159,7 +159,7 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 %type <stmts> stmtlist
 
 // New in example 17: if, while, block
-%type <st> stmt asgn print read if while block for
+%type <st> stmt asgn print read if while block for repeat
 
 %type <prog> program
 
@@ -334,6 +334,11 @@ stmt: SEMICOLON  /* Empty statement: ";" */
 		// Default action
 		// $$ = $1;
 	 }
+	| repeat
+	 {
+		// Default action
+		// $$ = $1;
+	 }
 ;
 
 
@@ -353,7 +358,7 @@ controlSymbol:  /* Epsilon rule*/
 
 	/*  NEW in example 17 */
 if:	/* Simple conditional statement */
-	IF controlSymbol cond stmt 
+	IF controlSymbol cond stmt ENDIF
     {
 		// Create a new if statement node
 		$$ = new lp::IfStmt($3, $4);
@@ -363,7 +368,7 @@ if:	/* Simple conditional statement */
 	}
 
 	/* Compound conditional statement */
-	| IF controlSymbol cond stmt  ELSE stmt 
+	| IF controlSymbol cond stmt  ELSE stmt ENDIF
 	 {
 		// Create a new if statement node
 		$$ = new lp::IfStmt($3, $4, $6);
@@ -374,7 +379,7 @@ if:	/* Simple conditional statement */
 ;
 
 	/*  NEW in example 17 */
-while:  WHILE controlSymbol cond stmt 
+while:  WHILE controlSymbol cond stmt ENDWHILE
 		{
 			// Create a new while statement node
 			$$ = new lp::WhileStmt($3, $4);
@@ -384,6 +389,15 @@ while:  WHILE controlSymbol cond stmt
     }
 ;
 
+repeat:  REPEAT stmt UNTIL controlSymbol cond 
+		{
+			// Create a new while statement node
+			$$ = new lp::RepeatStmt($5, $2);
+
+			// To control the interactive mode
+			control--;
+    }
+;
 
 for:	FOR controlSymbol VARIABLE FROM exp TO exp DO stmt ENDFOR
 		{
@@ -433,10 +447,10 @@ asgn:   VARIABLE ASSIGNMENT exp
 		}
 ;
 
-print:  PRINT exp 
+print:  PRINT LPAREN exp RPAREN 
 		{
 			// Create a new print node
-			 $$ = new lp::PrintStmt($2);
+			 $$ = new lp::PrintStmt($3);
 		}
 ;	
 

@@ -77,11 +77,14 @@ static struct {
 						{"if",	  IF},   	// NEW in example 17
 						{"then",	 THEN},
 						{"else",  ELSE}, 	// NEW in example 17
+						{"end_if", ENDIF},
 						{"while", WHILE},	// NEW in example 17
 						{"do",	DO},
+						{"end_while",ENDWHILE},
 						{"for", FOR},
     					{"from", FROM},
     					{"to", TO},
+						{"end_for", ENDFOR},
     					{"step", STEP},
 						{"repeat", REPEAT},
 						{"until", UNTIL},

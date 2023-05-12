@@ -1719,6 +1719,51 @@ class WhileStmt : public Statement
   void evaluate();
 };
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+// NEW in example 17
+
+/*!	
+  \class   WhileStmt
+  \brief   Definition of atributes and methods of WhileStmt class
+  \note    WhileStmt Class publicly inherits from Statement class 
+		       and adds its own printAST and evaluate functions
+*/
+class RepeatStmt: public Statement 
+{
+ private:
+  ExpNode *_cond; //!< Condicion of the while statement
+  Statement *_stmt; //!< Statement of the body of the while loop
+
+  public:
+/*!		
+	\brief Constructor of  WhileStmt
+	\param condition: ExpNode of the condition
+	\param statement: Statement of the body of the loop 
+	\post  A new WhileStmt is created with the parameters
+*/
+  RepeatStmt(ExpNode *condition, Statement *statement)
+	{
+		this->_cond = condition;
+		this->_stmt = statement;
+	}
+
+
+/*!
+	\brief   Print the AST for WhileStmt
+	\return  void
+	\sa		   evaluate
+*/
+  void printAST();
+
+/*!	
+	\brief   Evaluate the WhileStmt
+	\return  void
+	\sa	   	 printAST
+*/
+  void evaluate();
+};
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //FOR

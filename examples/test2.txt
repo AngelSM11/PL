@@ -1,29 +1,40 @@
+
+
 a := b := PI;
 
-print a;
-print b;
-print PI;
+
 
 dato := 2;
-print dato;
+print (dato);
 
 dato := true;
-print dato;
+print (dato);
 
 
-dato := 9;
-print dato;
+for i from 2 to 4 step 1 do
+	            print (34);
+	        end_for;
 
-dato := 7;
-dato1 := 2;
-d := dato//dato1;
-print d;
+d:=4;
 
-dato := 7;
-dato1 := 2;
-d := dato/dato1;
-print d;
+while (d > 2)
+					
+                    d:=d-1;
+                    
+				end_while;
+print (d);
 
-print 3> PI;
+
+
+d:=4;
+
+repeat 
+					
+                    d:=d-1;
+                    
+				until(d>1); 
+print (d);
+
+
 
 

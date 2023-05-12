@@ -1438,6 +1438,35 @@ void lp::WhileStmt::evaluate()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
+// REPEAT
+
+void lp::RepeatStmt::printAST() 
+{
+  std::cout << "RepeatStmt: "  << std::endl;
+  // stmt
+  std::cout << "\t";
+  this->_stmt->printAST();
+
+  // conditon
+  std::cout << "\t";
+  this->_cond->printAST();
+
+  std::cout << std::endl;
+}
+
+
+void lp::RepeatStmt::evaluate() 
+{
+  // While the condition is true. the body is run 
+  do{
+  
+	  this->_stmt->evaluate();
+  }while(this->_cond->evaluateBool() == true);
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
 // for
 
 void lp::ForStmt::printAST() 
@@ -1476,8 +1505,7 @@ void lp::ForStmt::evaluate()
     step = (this->_step != NULL) ? this->_step->evaluateNumber() : 1.0;
 
     /******************
-	 * ERROR HANDLING *
-	 *****************/
+	  ERROR HANDLING */
 
     //Step taking the variable away from end (would cause double overflow and lost of precision)
     if (((start > end) && (step > 0)) || ((start < end) && (step < 0))) {
@@ -1491,8 +1519,8 @@ void lp::ForStmt::evaluate()
     }
 
     /*******************
-	 * ACCESS TO TABLE *
-	 ******************/
+	 ACCESS TO TABLE*/
+	
 
     if (table.lookupSymbol(this->_iterator))
         table.eraseSymbol(this->_iterator);
