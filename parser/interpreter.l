@@ -175,6 +175,7 @@ comentario_simple \#.*
 							}
                      }
 
+":"		{return DP;}
 "-"		{ return MINUS;  } 			/* NEW in example 3 */
 "+"		{ return PLUS;   } 			/* NEW in example 3 */
 

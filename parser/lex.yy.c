@@ -286,16 +286,16 @@ static void yy_fatal_error YY_PROTO(( yyconst char msg[] ));
 	*yy_cp = '\0'; \
 	yy_c_buf_p = yy_cp;
 
-#define YY_NUM_RULES 38
-#define YY_END_OF_BUFFER 39
+#define YY_NUM_RULES 39
+#define YY_END_OF_BUFFER 40
 static yyconst short int yy_accept[62] =
     {   0,
-        0,    0,    0,    0,    0,    0,   39,   35,    6,    7,
-       30,    5,   21,   35,   10,   19,   20,   16,   15,    9,
-       14,   35,   17,   12,   35,    8,   29,   35,   28,   13,
-       22,   33,   35,   34,   36,   37,    4,    3,   25,    5,
-       32,   10,   10,   10,   12,   18,   12,   12,   23,    1,
-       27,   24,   26,   13,    0,   31,    2,    0,    0,   12,
+        0,    0,    0,    0,    0,    0,   40,   36,    6,    7,
+       31,    5,   22,   36,   10,   20,   21,   17,   16,    9,
+       15,   36,   18,   12,   14,    8,   30,   36,   29,   13,
+       23,   34,   36,   35,   37,   38,    4,    3,   26,    5,
+       33,   10,   10,   10,   12,   19,   12,   12,   24,    1,
+       28,   25,   27,   13,    0,   32,    2,    0,    0,   12,
         0
     } ;
 
@@ -864,112 +864,117 @@ YY_RULE_SETUP
 case 14:
 YY_RULE_SETUP
 #line 178 "interpreter.l"
-{ return MINUS;  } 			/* NEW in example 3 */
+{return DP;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 179 "interpreter.l"
-{ return PLUS;   } 			/* NEW in example 3 */
+{ return MINUS;  } 			/* NEW in example 3 */
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 181 "interpreter.l"
-{ return MULTIPLICATION; } 	/* NEW in example 3 */
+#line 180 "interpreter.l"
+{ return PLUS;   } 			/* NEW in example 3 */
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 182 "interpreter.l"
-{ return DIVISION; } 		/* NEW in example 3 */
+{ return MULTIPLICATION; } 	/* NEW in example 3 */
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 183 "interpreter.l"
-{ return DIVISION_ENTERA; } 		/*PLFINAL*/
+{ return DIVISION; } 		/* NEW in example 3 */
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 185 "interpreter.l"
-{ return LPAREN; } 			/* NEW in example 3 */
+#line 184 "interpreter.l"
+{ return DIVISION_ENTERA; } 		/*PLFINAL*/
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
 #line 186 "interpreter.l"
-{ return RPAREN; } 			/* NEW in example 3 */
+{ return LPAREN; } 			/* NEW in example 3 */
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 190 "interpreter.l"
-{ return MODULO; }			/* NEW in example 5 */
+#line 187 "interpreter.l"
+{ return RPAREN; } 			/* NEW in example 3 */
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 192 "interpreter.l"
-{ return POWER; }			/* NEW in example 5 */
+#line 191 "interpreter.l"
+{ return MODULO; }			/* NEW in example 5 */
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 194 "interpreter.l"
-{ return ASSIGNMENT; }		/* NEW in example 7 */
+#line 193 "interpreter.l"
+{ return POWER; }			/* NEW in example 5 */
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 197 "interpreter.l"
-{ return EQUAL; }			/* NEW in example 15 */
+#line 195 "interpreter.l"
+{ return ASSIGNMENT; }		/* NEW in example 7 */
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 199 "interpreter.l"
-{ return NOT_EQUAL; }		/* NEW in example 15 */
+#line 198 "interpreter.l"
+{ return EQUAL; }			/* NEW in example 15 */
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 201 "interpreter.l"
-{ return GREATER_OR_EQUAL; }/* NEW in example 15 */
+#line 200 "interpreter.l"
+{ return NOT_EQUAL; }		/* NEW in example 15 */
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 203 "interpreter.l"
-{ return LESS_OR_EQUAL; }	/* NEW in example 15 */
+#line 202 "interpreter.l"
+{ return GREATER_OR_EQUAL; }/* NEW in example 15 */
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 205 "interpreter.l"
-{ return GREATER_THAN; }	/* NEW in example 15 */
+#line 204 "interpreter.l"
+{ return LESS_OR_EQUAL; }	/* NEW in example 15 */
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 207 "interpreter.l"
-{ return LESS_THAN; }		/* NEW in example 15 */
+#line 206 "interpreter.l"
+{ return GREATER_THAN; }	/* NEW in example 15 */
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 209 "interpreter.l"
-{ return NOT; }				/* NEW in example 15 */
+#line 208 "interpreter.l"
+{ return LESS_THAN; }		/* NEW in example 15 */
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 211 "interpreter.l"
-{ return OR; }				/* NEW in example 15 */
+#line 210 "interpreter.l"
+{ return NOT; }				/* NEW in example 15 */
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 213 "interpreter.l"
-{ return AND; }				/* NEW in example 15 */
+#line 212 "interpreter.l"
+{ return OR; }				/* NEW in example 15 */
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 215 "interpreter.l"
-{ return LETFCURLYBRACKET; } 	/* NEW in example 17 */
+#line 214 "interpreter.l"
+{ return AND; }				/* NEW in example 15 */
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 217 "interpreter.l"
+#line 216 "interpreter.l"
+{ return LETFCURLYBRACKET; } 	/* NEW in example 17 */
+	YY_BREAK
+case 35:
+YY_RULE_SETUP
+#line 218 "interpreter.l"
 { return RIGHTCURLYBRACKET; }	/* NEW in example 17 */
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(ERROR):
 case YY_STATE_EOF(Q1):
-#line 222 "interpreter.l"
+#line 223 "interpreter.l"
 { /* The interpreter finishes when finds the end of file character */
 		/*  PLACE(24,10);
 	  	  std::cout <<  BICYAN;
@@ -981,9 +986,9 @@ case YY_STATE_EOF(Q1):
 	  	  return 0;
 	}
 	YY_BREAK
-case 35:
+case 36:
 YY_RULE_SETUP
-#line 234 "interpreter.l"
+#line 235 "interpreter.l"
 { 	
 									/* Any other character */
 									/* MODIFIIED in example 3 */
@@ -997,9 +1002,9 @@ YY_RULE_SETUP
 									yymore();  
 								}
 	YY_BREAK
-case 36:
+case 37:
 YY_RULE_SETUP
-#line 247 "interpreter.l"
+#line 248 "interpreter.l"
 { /* MODIFIED in examples 5, 7, 15 */
 								  /* NEW in example 3 */
 								  /* 
@@ -1009,9 +1014,9 @@ YY_RULE_SETUP
 									yymore(); 
 								}
 	YY_BREAK
-case 37:
+case 38:
 YY_RULE_SETUP
-#line 256 "interpreter.l"
+#line 257 "interpreter.l"
 { 
 								/* NEW in example 3 */
 								/* Rewind one position */
@@ -1024,12 +1029,12 @@ YY_RULE_SETUP
    								BEGIN(INITIAL);
 							}
 	YY_BREAK
-case 38:
+case 39:
 YY_RULE_SETUP
-#line 267 "interpreter.l"
+#line 268 "interpreter.l"
 ECHO;
 	YY_BREAK
-#line 1033 "lex.yy.c"
+#line 1038 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1917,6 +1922,6 @@ int main()
 	return 0;
 	}
 #endif
-#line 267 "interpreter.l"
+#line 268 "interpreter.l"
 
 

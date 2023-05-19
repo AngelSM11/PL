@@ -81,31 +81,32 @@ extern int yydebug;
     RIGHTCURLYBRACKET = 287,
     ASSIGNMENT = 288,
     COMMA = 289,
-    NUMBER = 290,
-    BOOL = 291,
-    VARIABLE = 292,
-    UNDEFINED = 293,
-    CONSTANT = 294,
-    BUILTIN = 295,
-    OR = 296,
-    AND = 297,
-    GREATER_OR_EQUAL = 298,
-    LESS_OR_EQUAL = 299,
-    GREATER_THAN = 300,
-    LESS_THAN = 301,
-    EQUAL = 302,
-    NOT_EQUAL = 303,
-    NOT = 304,
-    PLUS = 305,
-    MINUS = 306,
-    MULTIPLICATION = 307,
-    DIVISION = 308,
-    DIVISION_ENTERA = 309,
-    MODULO = 310,
-    LPAREN = 311,
-    RPAREN = 312,
-    UNARY = 313,
-    POWER = 314
+    DP = 290,
+    NUMBER = 291,
+    BOOL = 292,
+    VARIABLE = 293,
+    UNDEFINED = 294,
+    CONSTANT = 295,
+    BUILTIN = 296,
+    OR = 297,
+    AND = 298,
+    GREATER_OR_EQUAL = 299,
+    LESS_OR_EQUAL = 300,
+    GREATER_THAN = 301,
+    LESS_THAN = 302,
+    EQUAL = 303,
+    NOT_EQUAL = 304,
+    NOT = 305,
+    PLUS = 306,
+    MINUS = 307,
+    MULTIPLICATION = 308,
+    DIVISION = 309,
+    DIVISION_ENTERA = 310,
+    MODULO = 311,
+    LPAREN = 312,
+    RPAREN = 313,
+    UNARY = 314,
+    POWER = 315
   };
 #endif
 
@@ -123,8 +124,12 @@ union YYSTYPE
   std::list<lp::Statement *> *stmts; /* NEW in example 16 */
   lp::Statement *st;				 /* NEW in example 16 */
   lp::AST *prog;					 /* NEW in example 16 */
+  std::list<lp::ValueNode *> *cases;  					 
+  lp::ValueNode *individualCase;
+  lp::DefaultNode *iCase;							
+  lp::BlockCaseNode *switchCase; 			/* CAMBIARCOSAS */		
 
-#line 128 "interpreter.tab.h"
+#line 133 "interpreter.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

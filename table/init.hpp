@@ -91,6 +91,7 @@ static struct {
 						{"case", CASE},
 						{"value",	VALUE},
 						{"default", DEFAULT},
+						{"end_case", ENDCASE},
 	                    {"",      0}
 	                   };
 

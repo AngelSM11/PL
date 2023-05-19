@@ -1820,6 +1820,150 @@ class ForStmt : public Statement
   void evaluate();
 };
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+//DEFAULTNODE
+
+    /*!
+      \class   DefaultNode
+      \brief   
+    */
+
+    class DefaultNode
+    {
+    public:
+        std::list<Statement *> *_stmtList; //!< std::list<Statement*> List of expresions with the statements of the case
+
+    public:
+        /*!
+            \brief Constructor of CaseNode
+           
+            \param stmtList: Pointer to the list of statements of the Case
+            \post  A new CaseNode is created with the parameter
+        */
+       DefaultNode(std::list<Statement*> *stmtList) : _stmtList(stmtList)
+        {
+            
+        }
+
+
+        void printAST();
+
+
+        void evaluate();
+
+    
+
+    };
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+//VALUENODE
+
+    /*!
+      \class   CaseNode
+      \brief   Definition of atributes and methods of CaseNode class
+    */
+
+    class ValueNode
+    {
+    public:
+        ExpNode *_exp; 
+        std::list<Statement *> *_stmtList; 
+
+    public:
+        /*!
+            \brief Constructor of ValueNode
+            \param expCase: Pointer to the expression of the Case
+            \param stmtList: Pointer to the list of statements of the Case
+            \post  A new CaseNode is created with the parameter
+        */
+        ValueNode(ExpNode *expCase, std::list<Statement *> *stmtList) : _stmtList(stmtList)
+        {
+            this->_exp = expCase;
+        }
+
+        /*!
+            \brief   Print the CaseNode
+            \return  void
+            \sa		 evaluate()
+        */
+
+        void printAST();
+
+        /*!
+            \brief   Evaluate the CaseNode
+            \return  void
+            \sa		 print()
+        */
+        void evaluate();
+
+        /*!
+            \brief   Returns the type of the CaseNode
+            \return  int with the type
+            \sa		 getExp()
+        */
+        int getType();
+
+        /*!
+            \brief   Get the expression of the CaseNode
+            \return  ExpNode*
+        */
+        lp::ExpNode *getExp()
+        {
+            return this->_exp;
+        }
+    };
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+//  BLOCKCASENODE
+
+
+    /*!
+      \class   BlockSwitchCaseNode
+      \brief   Definition of atributes and methods of BlockSwitchCaseNode class
+      \note    BlockSwitchCaseNode Class publicly inherits from Statement class
+               and adds its own print and evaluate functions
+    */
+    class BlockCaseNode : public Statement
+    {
+
+    private:
+        ExpNode *_exp;                 //!< Value of the switch to "switch between cases"
+        std::list<ValueNode *> *_cases; //!< List of SwitchCases
+        std::list<ValueNode *> *_cases2;
+
+    public:
+        /*!
+            \brief Constructor of BlockSwitchCase
+            \param initialValue: expresion with the name of the variable to be used in the switch
+            \param switchCasesList: list of cases
+            \param defaultCase: pointer to the default case
+            \post  A new BlockSwitchCase is created with the parameters
+        */
+        BlockCaseNode(ExpNode *initialValue, std::list<lp::ValueNode *> *valuesList) : _cases(valuesList) 
+        {
+            this->_exp = initialValue;
+            
+        }
+
+        /*!
+            \brief   Print the BlockSwitchCase
+            \return  void
+            \sa		 evaluate()
+        */
+        void printAST();
+
+        /*!
+            \brief   Evaluate the BlockSwitchCase
+            \return  void
+            \sa		 print()
+        */
+        void evaluate();
+    };
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // NEW in example 17

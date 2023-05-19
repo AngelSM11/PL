@@ -1473,11 +1473,12 @@ void lp::ForStmt::printAST()
 {
 
     std::cout << "ForStmt: " << std::endl;
+	std::cout << "\t";
     std::cout << this->_iterator;
 
-    if (this->_step != NULL)
-        this->_step->printAST();
-
+    if (this->_step != NULL){
+		this->_step->printAST();
+	}
     this->_end->printAST();
 
     this->_statement->printAST();
@@ -1487,15 +1488,9 @@ void lp::ForStmt::printAST()
 
 void lp::ForStmt::evaluate() 
 {
-  // While the condition is true. the body is run 
+ 
 	double start, end, step = 1;
-    bool error = false;
-
-    /**********************
-	 * CHECKING THE TYPES *
-	 *********************/
-
-    //We use short circuit evaluation to avoid having 2 different if statements depending on wether the step is defined
+        
     if ((this->_start->getType() != NUMBER) || (this->_end->getType() != NUMBER) || ((this->_step != NULL) && (this->_step->getType() != NUMBER))) {
         warning("Runtime error: incompatible type of expression for ", "For");
         return;
@@ -1504,23 +1499,15 @@ void lp::ForStmt::evaluate()
     end = this->_end->evaluateNumber();
     step = (this->_step != NULL) ? this->_step->evaluateNumber() : 1.0;
 
-    /******************
-	  ERROR HANDLING */
-
-    //Step taking the variable away from end (would cause double overflow and lost of precision)
     if (((start > end) && (step > 0)) || ((start < end) && (step < 0))) {
         warning("Runtime error: step would cause overflow for", "For");
-        error = true;
+       
     }
 
-    //Step equal to 0 (infinite loop)
+
     if (std::abs(step) < ERROR_BOUND) {
         ;
     }
-
-    /*******************
-	 ACCESS TO TABLE*/
-	
 
     if (table.lookupSymbol(this->_iterator))
         table.eraseSymbol(this->_iterator);
@@ -1543,8 +1530,128 @@ void lp::ForStmt::evaluate()
 
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+// DEFAULTNODE
 
 
+void lp::DefaultNode::printAST()
+{
+    std::list<Statement *>::iterator itr;
+    std::cout << "DefaultNode: " << std::endl;
+    std::cout << "\t";
+    for (itr = this->_stmtList->begin(); itr != this->_stmtList->end(); itr++)
+    {
+        (*itr)->printAST();
+    }
+    std::cout << std::endl;
+}
+
+void lp::DefaultNode::evaluate()
+{
+    std::list<Statement *>::iterator itr;
+    for (itr = this->_stmtList->begin(); itr != this->_stmtList->end(); itr++)
+    {
+        (*itr)->evaluate();
+    }
+}
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+// VALUENODE
+
+int lp::ValueNode::getType()
+{
+    return this->_exp->getType();
+}
+
+void lp::ValueNode::printAST()
+{
+    std::list<Statement *>::iterator itr;
+    std::cout << "ValueNode: " << std::endl;
+    std::cout << "\t";
+    for (itr = this->_stmtList->begin(); itr != this->_stmtList->end(); itr++)
+    {
+        (*itr)->printAST();
+    }
+    std::cout << std::endl;
+}
+
+void lp::ValueNode::evaluate()
+{
+    std::list<Statement *>::iterator itr;
+    for (itr = this->_stmtList->begin(); itr != this->_stmtList->end(); itr++)
+    {
+        (*itr)->evaluate();
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+// BLOCKCASENODE
+
+
+void lp::BlockCaseNode::printAST()
+{
+    std::list<ValueNode *>::iterator itr;
+    std::cout << "ValuesStmt: " << std::endl;
+    std::cout << "\t";
+    this->_exp->printAST();
+    std::cout << "\t";
+    for (itr = this->_cases->begin(); itr != this->_cases->end(); itr++)
+    {
+        (*itr)->printAST();
+    }
+
+    std::cout << std::endl;
+}
+
+void lp::BlockCaseNode::evaluate()
+{
+    int type = this->_exp->getType();
+    std::list<ValueNode *>::iterator valueIter;
+    
+
+    for (valueIter = this->_cases->begin(); valueIter != this->_cases->end(); valueIter++)
+    {
+        if ((*valueIter)->getType() == type)
+        {
+            switch (type)
+            {
+            case NUMBER:
+            {
+                if ((*valueIter)->getExp()->evaluateNumber() == this->_exp->evaluateNumber())
+                {
+                    (*valueIter)->evaluate();
+                }
+            }
+            break;
+
+            case BOOL:
+            {
+                if ((*valueIter)->getExp()->evaluateBool() == this->_exp->evaluateBool())
+                {
+                    (*valueIter)->evaluate();
+                }
+            }
+            break;
+
+
+            default:
+                warning("Runtime error: incompatible types for ", "valor");
+            }
+        }
+
+        else
+        {
+            warning("Runtime error: incompatible types for ", "valor");
+        }
+    }
+
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////

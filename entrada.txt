@@ -1,8 +1,10 @@
-if (-PI> 0) print true;
+dato := 4;
 
-dato = 2;
-print dato;
-
-if (dato > 0) print dato; else print -dato;
-
-
+case(dato)
+    value 1:
+        print (dato);
+    value 2:
+        print (34);
+    default:
+        print (33);
+end_case;

@@ -147,6 +147,10 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
   std::list<lp::Statement *> *stmts; /* NEW in example 16 */
   lp::Statement *st;				 /* NEW in example 16 */
   lp::AST *prog;					 /* NEW in example 16 */
+  std::list<lp::ValueNode *> *cases;  					 
+  lp::ValueNode *individualCase;
+  lp::DefaultNode *iCase;							
+  lp::BlockCaseNode *switchCase; 			/* CAMBIARCOSAS */		
 }
 
 /* Type of the non-terminal symbols */
@@ -157,6 +161,16 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 %type <parameters> listOfExp  restOfListOfExp
 
 %type <stmts> stmtlist
+
+
+// New in v. 0.0.4 
+%type <cases> valuelist
+
+// NEW in v. 0.0.5
+%type <individualCase> value 
+%type <iCase> valueDefault 
+// NEW in v. 0.0.5
+%type <switchCase> case
 
 // New in example 17: if, while, block
 %type <st> stmt asgn print read if while block for repeat
@@ -190,7 +204,7 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 %right ASSIGNMENT
 
 /* NEW in example 14 */
-%token COMMA
+%token COMMA DP
 
 /*******************************************/
 /* MODIFIED in example 4 */
@@ -339,6 +353,11 @@ stmt: SEMICOLON  /* Empty statement: ";" */
 		// Default action
 		// $$ = $1;
 	 }
+	| case
+	 {
+		// Default action
+		// $$ = $1;
+	 }
 ;
 
 
@@ -413,7 +432,48 @@ for:	FOR controlSymbol VARIABLE FROM exp TO exp DO stmt ENDFOR
 		}
 ;
 
+case: CASE controlSymbol LPAREN exp RPAREN valuelist ENDCASE
+		{
+			$$ = new lp::BlockCaseNode($4, $6);
+			control--;
+		}
+	/* FALTA POR HACER CASO DEFAULT */
+	| CASE controlSymbol LPAREN exp RPAREN valuelist DEFAULT valueDefault ENDCASE
+		{
+			$$ = new lp::BlockCaseNode($4, $6);
+			control--;
+		}
+			
 
+valuelist: value valuelist
+		{
+
+			$$ = $2;
+			$$->push_back($1);
+			
+		}
+
+	| 	{
+			$$ = new std::list<lp::ValueNode *>(); 
+		}
+	
+
+value: VALUE NUMBER DP stmtlist
+		{
+			lp::ExpNode * exp = new lp::NumberNode($2);
+			$$ = new lp::ValueNode(exp, $4);
+		}
+
+	| VALUE CONSTANT DP stmtlist
+		{
+			lp::ExpNode * exp = new lp::ConstantNode($2);
+			$$ = new lp::ValueNode(exp, $4);
+		}
+	
+valueDefault: DP stmtlist
+		{			
+			$$ = new lp::DefaultNode($2);
+		}
 
 	/*  NEW in example 17 */
 cond: 	LPAREN exp RPAREN
