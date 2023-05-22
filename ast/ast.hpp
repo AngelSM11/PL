@@ -1922,31 +1922,38 @@ class ForStmt : public Statement
 
 
     /*!
-      \class   BlockSwitchCaseNode
-      \brief   Definition of atributes and methods of BlockSwitchCaseNode class
-      \note    BlockSwitchCaseNode Class publicly inherits from Statement class
-               and adds its own print and evaluate functions
+      \class   BlockCaseNode
+      \brief   Definition of atributes and methods of BlockCaseNode class
     */
     class BlockCaseNode : public Statement
     {
 
     private:
-        ExpNode *_exp;                 //!< Value of the switch to "switch between cases"
-        std::list<ValueNode *> *_cases; //!< List of SwitchCases
-        std::list<ValueNode *> *_cases2;
+        ExpNode *_exp;                 //!< type of expresion of the value
+        std::list<ValueNode *> *_cases; //!< List of the differtent values
+        DefaultNode *_dCase;			//! This is the defaultCase
 
     public:
         /*!
-            \brief Constructor of BlockSwitchCase
-            \param initialValue: expresion with the name of the variable to be used in the switch
-            \param switchCasesList: list of cases
-            \param defaultCase: pointer to the default case
-            \post  A new BlockSwitchCase is created with the parameters
+            \brief Constructor of BlockCase
+            \param initialValue
+            \param ValueList
+            \param defaultCase
+            \post  A new BlockCase is created with the parameters
         */
-        BlockCaseNode(ExpNode *initialValue, std::list<lp::ValueNode *> *valuesList) : _cases(valuesList) 
+        BlockCaseNode(ExpNode *iValue, std::list<lp::ValueNode *> *valuesList) : _cases(valuesList) 
         {
-            this->_exp = initialValue;
-            
+            this->_exp = iValue;
+			this->_cases = valuesList;
+			//this->_dCase = NULL; 
+        }
+
+		BlockCaseNode(ExpNode *iValue, std::list<lp::ValueNode *> *valuesList, DefaultNode *dNode) : _cases(valuesList)
+        {
+            this->_exp = iValue;
+			this->_cases=valuesList;
+			this->_dCase=dNode;
+			  
         }
 
         /*!

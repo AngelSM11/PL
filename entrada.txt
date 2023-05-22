@@ -1,10 +1,10 @@
-dato := 4;
+dato := 1;
 
 case(dato)
     value 1:
         print (dato);
     value 2:
         print (34);
-    default:
-        print (33);
-end_case;
+    default: 
+        print (3);
+end_case

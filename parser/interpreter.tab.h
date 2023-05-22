@@ -81,7 +81,7 @@ extern int yydebug;
     RIGHTCURLYBRACKET = 287,
     ASSIGNMENT = 288,
     COMMA = 289,
-    DP = 290,
+    COLON = 290,
     NUMBER = 291,
     BOOL = 292,
     VARIABLE = 293,
@@ -127,7 +127,7 @@ union YYSTYPE
   std::list<lp::ValueNode *> *cases;  					 
   lp::ValueNode *individualCase;
   lp::DefaultNode *iCase;							
-  lp::BlockCaseNode *switchCase; 			/* CAMBIARCOSAS */		
+  lp::BlockCaseNode *sCase; 			
 
 #line 133 "interpreter.tab.h"
 

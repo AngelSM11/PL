@@ -1605,7 +1605,9 @@ void lp::BlockCaseNode::printAST()
     {
         (*itr)->printAST();
     }
-
+	if(_dCase!=NULL){
+		_dCase->printAST();
+	}
     std::cout << std::endl;
 }
 
@@ -1613,7 +1615,7 @@ void lp::BlockCaseNode::evaluate()
 {
     int type = this->_exp->getType();
     std::list<ValueNode *>::iterator valueIter;
-    
+    bool aux= false;
 
     for (valueIter = this->_cases->begin(); valueIter != this->_cases->end(); valueIter++)
     {
@@ -1626,6 +1628,7 @@ void lp::BlockCaseNode::evaluate()
                 if ((*valueIter)->getExp()->evaluateNumber() == this->_exp->evaluateNumber())
                 {
                     (*valueIter)->evaluate();
+					aux=true;
                 }
             }
             break;
@@ -1635,6 +1638,7 @@ void lp::BlockCaseNode::evaluate()
                 if ((*valueIter)->getExp()->evaluateBool() == this->_exp->evaluateBool())
                 {
                     (*valueIter)->evaluate();
+					aux=true;
                 }
             }
             break;
@@ -1649,8 +1653,12 @@ void lp::BlockCaseNode::evaluate()
         {
             warning("Runtime error: incompatible types for ", "valor");
         }
-    }
 
+		
+    }
+	if(aux==false && _dCase!=NULL){
+		_dCase->evaluate();
+	}
 }
 
 

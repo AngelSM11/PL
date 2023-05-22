@@ -266,7 +266,7 @@ extern int yydebug;
     RIGHTCURLYBRACKET = 287,
     ASSIGNMENT = 288,
     COMMA = 289,
-    DP = 290,
+    COLON = 290,
     NUMBER = 291,
     BOOL = 292,
     VARIABLE = 293,
@@ -312,7 +312,7 @@ union YYSTYPE
   std::list<lp::ValueNode *> *cases;  					 
   lp::ValueNode *individualCase;
   lp::DefaultNode *iCase;							
-  lp::BlockCaseNode *switchCase; 			/* CAMBIARCOSAS */		
+  lp::BlockCaseNode *sCase; 			
 
 #line 318 "interpreter.tab.c"
 
@@ -695,13 +695,13 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,   255,   255,   269,   274,   297,   308,   313,   318,   323,
-     329,   335,   340,   346,   351,   356,   364,   372,   380,   390,
-     401,   411,   421,   427,   435,   441,   448,   456,   461,   467,
-     473,   479,   486,   492,   499,   504,   510,   517,   524,   531,
-     537,   543,   549,   555,   561,   567,   573,   579,   585,   592,
-     598,   604,   611,   658,   664,   670,   676,   682,   688,   694,
-     700,   706,   716,   721,   732,   737
+       0,   249,   249,   263,   268,   291,   302,   307,   312,   317,
+     323,   329,   334,   340,   345,   350,   358,   366,   374,   384,
+     395,   405,   415,   421,   429,   434,   441,   449,   454,   460,
+     466,   472,   479,   485,   492,   497,   503,   510,   517,   524,
+     530,   536,   542,   548,   554,   560,   566,   572,   578,   585,
+     591,   597,   604,   651,   657,   663,   669,   675,   681,   687,
+     693,   699,   709,   714,   725,   730
 };
 #endif
 
@@ -715,7 +715,7 @@ static const char *const yytname[] =
   "ENDIF", "WHILE", "DO", "ENDWHILE", "REPEAT", "UNTIL", "FOR", "FROM",
   "ENDFOR", "STEP", "TO", "CASE", "VALUE", "DEFAULT", "ENDCASE", "CADENA",
   "COMENTARIO", "COMENTARIOSIMPLE", "LETFCURLYBRACKET",
-  "RIGHTCURLYBRACKET", "ASSIGNMENT", "COMMA", "DP", "NUMBER", "BOOL",
+  "RIGHTCURLYBRACKET", "ASSIGNMENT", "COMMA", "COLON", "NUMBER", "BOOL",
   "VARIABLE", "UNDEFINED", "CONSTANT", "BUILTIN", "OR", "AND",
   "GREATER_OR_EQUAL", "LESS_OR_EQUAL", "GREATER_THAN", "LESS_THAN",
   "EQUAL", "NOT_EQUAL", "NOT", "PLUS", "MINUS", "MULTIPLICATION",
@@ -1667,7 +1667,7 @@ yyreduce:
   switch (yyn)
     {
   case 2:
-#line 256 "interpreter.y"
+#line 250 "interpreter.y"
                   { 
 		    // Create a new AST
 			(yyval.prog) = new lp::AST((yyvsp[0].stmts)); 
@@ -1682,7 +1682,7 @@ yyreduce:
     break;
 
   case 3:
-#line 269 "interpreter.y"
+#line 263 "interpreter.y"
                   { 
 			// create a empty list of statements
 			(yyval.stmts) = new std::list<lp::Statement *>(); 
@@ -1691,7 +1691,7 @@ yyreduce:
     break;
 
   case 4:
-#line 275 "interpreter.y"
+#line 269 "interpreter.y"
                   { 
 			// copy up the list and add the stmt to it
 			(yyval.stmts) = (yyvsp[-1].stmts);
@@ -1717,7 +1717,7 @@ yyreduce:
     break;
 
   case 5:
-#line 298 "interpreter.y"
+#line 292 "interpreter.y"
       { 
 			 // just copy up the stmtlist when an error occurs
 			 (yyval.stmts) = (yyvsp[-1].stmts);
@@ -1729,7 +1729,7 @@ yyreduce:
     break;
 
   case 6:
-#line 309 "interpreter.y"
+#line 303 "interpreter.y"
           {
 		// Create a new empty statement node
 		(yyval.st) = new lp::EmptyStmt(); 
@@ -1738,7 +1738,7 @@ yyreduce:
     break;
 
   case 7:
-#line 314 "interpreter.y"
+#line 308 "interpreter.y"
           {
 		// Default action
 		// $$ = $1;
@@ -1747,7 +1747,7 @@ yyreduce:
     break;
 
   case 8:
-#line 319 "interpreter.y"
+#line 313 "interpreter.y"
           {
 		// Default action
 		// $$ = $1;
@@ -1756,7 +1756,7 @@ yyreduce:
     break;
 
   case 9:
-#line 324 "interpreter.y"
+#line 318 "interpreter.y"
           {
 		// Default action
 		// $$ = $1;
@@ -1765,7 +1765,7 @@ yyreduce:
     break;
 
   case 10:
-#line 330 "interpreter.y"
+#line 324 "interpreter.y"
          {
 		// Default action
 		// $$ = $1;
@@ -1774,7 +1774,7 @@ yyreduce:
     break;
 
   case 11:
-#line 336 "interpreter.y"
+#line 330 "interpreter.y"
          {
 		// Default action
 		// $$ = $1;
@@ -1783,7 +1783,7 @@ yyreduce:
     break;
 
   case 12:
-#line 341 "interpreter.y"
+#line 335 "interpreter.y"
         {
 		// Default action
 		// $$ = $1;
@@ -1792,7 +1792,7 @@ yyreduce:
     break;
 
   case 13:
-#line 347 "interpreter.y"
+#line 341 "interpreter.y"
          {
 		// Default action
 		// $$ = $1;
@@ -1801,7 +1801,7 @@ yyreduce:
     break;
 
   case 14:
-#line 352 "interpreter.y"
+#line 346 "interpreter.y"
          {
 		// Default action
 		// $$ = $1;
@@ -1810,7 +1810,7 @@ yyreduce:
     break;
 
   case 15:
-#line 357 "interpreter.y"
+#line 351 "interpreter.y"
          {
 		// Default action
 		// $$ = $1;
@@ -1819,7 +1819,7 @@ yyreduce:
     break;
 
   case 16:
-#line 365 "interpreter.y"
+#line 359 "interpreter.y"
                 {
 			// Create a new block of statements node
 			(yyval.st) = new lp::BlockStmt((yyvsp[-1].stmts)); 
@@ -1828,7 +1828,7 @@ yyreduce:
     break;
 
   case 17:
-#line 372 "interpreter.y"
+#line 366 "interpreter.y"
                 {
 			// To control the interactive mode in "if" and "while" sentences
 			control++;
@@ -1837,7 +1837,7 @@ yyreduce:
     break;
 
   case 18:
-#line 381 "interpreter.y"
+#line 375 "interpreter.y"
     {
 		// Create a new if statement node
 		(yyval.st) = new lp::IfStmt((yyvsp[-3].expNode), (yyvsp[-1].st));
@@ -1849,7 +1849,7 @@ yyreduce:
     break;
 
   case 19:
-#line 391 "interpreter.y"
+#line 385 "interpreter.y"
          {
 		// Create a new if statement node
 		(yyval.st) = new lp::IfStmt((yyvsp[-5].expNode), (yyvsp[-3].st), (yyvsp[-1].st));
@@ -1861,7 +1861,7 @@ yyreduce:
     break;
 
   case 20:
-#line 402 "interpreter.y"
+#line 396 "interpreter.y"
                 {
 			// Create a new while statement node
 			(yyval.st) = new lp::WhileStmt((yyvsp[-2].expNode), (yyvsp[-1].st));
@@ -1873,7 +1873,7 @@ yyreduce:
     break;
 
   case 21:
-#line 412 "interpreter.y"
+#line 406 "interpreter.y"
                 {
 			// Create a new while statement node
 			(yyval.st) = new lp::RepeatStmt((yyvsp[0].expNode), (yyvsp[-3].st));
@@ -1885,7 +1885,7 @@ yyreduce:
     break;
 
   case 22:
-#line 422 "interpreter.y"
+#line 416 "interpreter.y"
                 {
 			(yyval.st) = new lp::ForStmt((yyvsp[-7].string), (yyvsp[-5].expNode), (yyvsp[-3].expNode), (yyvsp[-1].st));
 
@@ -1895,7 +1895,7 @@ yyreduce:
     break;
 
   case 23:
-#line 428 "interpreter.y"
+#line 422 "interpreter.y"
                 {
 			(yyval.st) = new lp::ForStmt((yyvsp[-9].string), (yyvsp[-7].expNode), (yyvsp[-5].expNode), (yyvsp[-3].expNode), (yyvsp[-1].st));
 
@@ -1905,25 +1905,25 @@ yyreduce:
     break;
 
   case 24:
-#line 436 "interpreter.y"
+#line 430 "interpreter.y"
                 {
-			(yyval.switchCase) = new lp::BlockCaseNode((yyvsp[-3].expNode), (yyvsp[-1].cases));
+			(yyval.sCase) = new lp::BlockCaseNode((yyvsp[-3].expNode), (yyvsp[-1].cases));
 			control--;
 		}
 #line 1914 "interpreter.tab.c"
     break;
 
   case 25:
-#line 442 "interpreter.y"
+#line 435 "interpreter.y"
                 {
-			(yyval.switchCase) = new lp::BlockCaseNode((yyvsp[-5].expNode), (yyvsp[-3].cases));
+			(yyval.sCase) = new lp::BlockCaseNode((yyvsp[-5].expNode), (yyvsp[-3].cases), (yyvsp[-1].iCase));
 			control--;
 		}
 #line 1923 "interpreter.tab.c"
     break;
 
   case 26:
-#line 449 "interpreter.y"
+#line 442 "interpreter.y"
                 {
 
 			(yyval.cases) = (yyvsp[0].cases);
@@ -1934,7 +1934,7 @@ yyreduce:
     break;
 
   case 27:
-#line 456 "interpreter.y"
+#line 449 "interpreter.y"
                 {
 			(yyval.cases) = new std::list<lp::ValueNode *>(); 
 		}
@@ -1942,7 +1942,7 @@ yyreduce:
     break;
 
   case 28:
-#line 462 "interpreter.y"
+#line 455 "interpreter.y"
                 {
 			lp::ExpNode * exp = new lp::NumberNode((yyvsp[-2].number));
 			(yyval.individualCase) = new lp::ValueNode(exp, (yyvsp[0].stmts));
@@ -1951,7 +1951,7 @@ yyreduce:
     break;
 
   case 29:
-#line 468 "interpreter.y"
+#line 461 "interpreter.y"
                 {
 			lp::ExpNode * exp = new lp::ConstantNode((yyvsp[-2].string));
 			(yyval.individualCase) = new lp::ValueNode(exp, (yyvsp[0].stmts));
@@ -1960,7 +1960,7 @@ yyreduce:
     break;
 
   case 30:
-#line 474 "interpreter.y"
+#line 467 "interpreter.y"
                 {			
 			(yyval.iCase) = new lp::DefaultNode((yyvsp[0].stmts));
 		}
@@ -1968,7 +1968,7 @@ yyreduce:
     break;
 
   case 31:
-#line 480 "interpreter.y"
+#line 473 "interpreter.y"
                 { 
 			(yyval.expNode) = (yyvsp[-1].expNode);
 		}
@@ -1976,7 +1976,7 @@ yyreduce:
     break;
 
   case 32:
-#line 487 "interpreter.y"
+#line 480 "interpreter.y"
                 { 
 			// Create a new assignment node
 			(yyval.st) = new lp::AssignmentStmt((yyvsp[-2].string), (yyvsp[0].expNode));
@@ -1985,7 +1985,7 @@ yyreduce:
     break;
 
   case 33:
-#line 493 "interpreter.y"
+#line 486 "interpreter.y"
                 { 
 			// Create a new assignment node
 			(yyval.st) = new lp::AssignmentStmt((yyvsp[-2].string), (lp::AssignmentStmt *) (yyvsp[0].st));
@@ -1994,7 +1994,7 @@ yyreduce:
     break;
 
   case 34:
-#line 500 "interpreter.y"
+#line 493 "interpreter.y"
                 {   
  			execerror("Semantic error in assignment: it is not allowed to modify a constant ", (yyvsp[-2].string));
 		}
@@ -2002,7 +2002,7 @@ yyreduce:
     break;
 
   case 35:
-#line 505 "interpreter.y"
+#line 498 "interpreter.y"
                 {   
  			execerror("Semantic error in multiple assignment: it is not allowed to modify a constant ",(yyvsp[-2].string));
 		}
@@ -2010,7 +2010,7 @@ yyreduce:
     break;
 
   case 36:
-#line 511 "interpreter.y"
+#line 504 "interpreter.y"
                 {
 			// Create a new print node
 			 (yyval.st) = new lp::PrintStmt((yyvsp[-1].expNode));
@@ -2019,7 +2019,7 @@ yyreduce:
     break;
 
   case 37:
-#line 518 "interpreter.y"
+#line 511 "interpreter.y"
                 {
 			// Create a new read node
 			 (yyval.st) = new lp::ReadStmt((yyvsp[-1].string));
@@ -2028,7 +2028,7 @@ yyreduce:
     break;
 
   case 38:
-#line 525 "interpreter.y"
+#line 518 "interpreter.y"
                 {   
  			execerror("Semantic error in \"read statement\": it is not allowed to modify a constant ",(yyvsp[-1].string));
 		}
@@ -2036,7 +2036,7 @@ yyreduce:
     break;
 
   case 39:
-#line 532 "interpreter.y"
+#line 525 "interpreter.y"
                 { 
 			// Create a new number node
 			(yyval.expNode) = new lp::NumberNode((yyvsp[0].number));
@@ -2045,7 +2045,7 @@ yyreduce:
     break;
 
   case 40:
-#line 538 "interpreter.y"
+#line 531 "interpreter.y"
                 { 
 			// Create a new plus node
 			 (yyval.expNode) = new lp::PlusNode((yyvsp[-2].expNode), (yyvsp[0].expNode));
@@ -2054,7 +2054,7 @@ yyreduce:
     break;
 
   case 41:
-#line 544 "interpreter.y"
+#line 537 "interpreter.y"
         {
 			// Create a new minus node
 			(yyval.expNode) = new lp::MinusNode((yyvsp[-2].expNode), (yyvsp[0].expNode));
@@ -2063,7 +2063,7 @@ yyreduce:
     break;
 
   case 42:
-#line 550 "interpreter.y"
+#line 543 "interpreter.y"
                 { 
 			// Create a new multiplication node
 			(yyval.expNode) = new lp::MultiplicationNode((yyvsp[-2].expNode), (yyvsp[0].expNode));
@@ -2072,7 +2072,7 @@ yyreduce:
     break;
 
   case 43:
-#line 556 "interpreter.y"
+#line 549 "interpreter.y"
                 {
 		  // Create a new division node	
 		  (yyval.expNode) = new lp::DivisionNode((yyvsp[-2].expNode), (yyvsp[0].expNode));
@@ -2081,7 +2081,7 @@ yyreduce:
     break;
 
   case 44:
-#line 562 "interpreter.y"
+#line 555 "interpreter.y"
                 {
 		  // Create a new division node	
 		  (yyval.expNode) = new lp::DivisionENode((yyvsp[-2].expNode), (yyvsp[0].expNode));
@@ -2090,7 +2090,7 @@ yyreduce:
     break;
 
   case 45:
-#line 568 "interpreter.y"
+#line 561 "interpreter.y"
         { 
 		    // just copy up the expression node 
 			(yyval.expNode) = (yyvsp[-1].expNode);
@@ -2099,7 +2099,7 @@ yyreduce:
     break;
 
   case 46:
-#line 574 "interpreter.y"
+#line 567 "interpreter.y"
                 { 
 		  // Create a new unary plus node	
   		  (yyval.expNode) = new lp::UnaryPlusNode((yyvsp[0].expNode));
@@ -2108,7 +2108,7 @@ yyreduce:
     break;
 
   case 47:
-#line 580 "interpreter.y"
+#line 573 "interpreter.y"
                 { 
 		  // Create a new unary minus node	
   		  (yyval.expNode) = new lp::UnaryMinusNode((yyvsp[0].expNode));
@@ -2117,7 +2117,7 @@ yyreduce:
     break;
 
   case 48:
-#line 586 "interpreter.y"
+#line 579 "interpreter.y"
                 {
 		  // Create a new modulo node	
 
@@ -2127,7 +2127,7 @@ yyreduce:
     break;
 
   case 49:
-#line 593 "interpreter.y"
+#line 586 "interpreter.y"
         { 
 		  // Create a new power node	
   		  (yyval.expNode) = new lp::PowerNode((yyvsp[-2].expNode), (yyvsp[0].expNode));
@@ -2136,7 +2136,7 @@ yyreduce:
     break;
 
   case 50:
-#line 599 "interpreter.y"
+#line 592 "interpreter.y"
                 {
 		  // Create a new variable node	
 		  (yyval.expNode) = new lp::VariableNode((yyvsp[0].string));
@@ -2145,7 +2145,7 @@ yyreduce:
     break;
 
   case 51:
-#line 605 "interpreter.y"
+#line 598 "interpreter.y"
                 {
 		  // Create a new constant node	
 		  (yyval.expNode) = new lp::ConstantNode((yyvsp[0].string));
@@ -2155,7 +2155,7 @@ yyreduce:
     break;
 
   case 52:
-#line 612 "interpreter.y"
+#line 605 "interpreter.y"
                 {
 			// Get the identifier in the table of symbols as Builtin
 			lp::Builtin *f= (lp::Builtin *) table.getSymbol((yyvsp[-3].string));
@@ -2205,7 +2205,7 @@ yyreduce:
     break;
 
   case 53:
-#line 659 "interpreter.y"
+#line 652 "interpreter.y"
                 {
 		  // Create a new "greater than" node	
  			(yyval.expNode) = new lp::GreaterThanNode((yyvsp[-2].expNode),(yyvsp[0].expNode));
@@ -2214,7 +2214,7 @@ yyreduce:
     break;
 
   case 54:
-#line 665 "interpreter.y"
+#line 658 "interpreter.y"
                 {
 		  // Create a new "greater or equal" node	
  			(yyval.expNode) = new lp::GreaterOrEqualNode((yyvsp[-2].expNode),(yyvsp[0].expNode));
@@ -2223,7 +2223,7 @@ yyreduce:
     break;
 
   case 55:
-#line 671 "interpreter.y"
+#line 664 "interpreter.y"
                 {
 		  // Create a new "less than" node	
  			(yyval.expNode) = new lp::LessThanNode((yyvsp[-2].expNode),(yyvsp[0].expNode));
@@ -2232,7 +2232,7 @@ yyreduce:
     break;
 
   case 56:
-#line 677 "interpreter.y"
+#line 670 "interpreter.y"
                 {
 		  // Create a new "less or equal" node	
  			(yyval.expNode) = new lp::LessOrEqualNode((yyvsp[-2].expNode),(yyvsp[0].expNode));
@@ -2241,7 +2241,7 @@ yyreduce:
     break;
 
   case 57:
-#line 683 "interpreter.y"
+#line 676 "interpreter.y"
                 {
 		  // Create a new "equal" node	
  			(yyval.expNode) = new lp::EqualNode((yyvsp[-2].expNode),(yyvsp[0].expNode));
@@ -2250,7 +2250,7 @@ yyreduce:
     break;
 
   case 58:
-#line 689 "interpreter.y"
+#line 682 "interpreter.y"
                 {
 		  // Create a new "not equal" node	
  			(yyval.expNode) = new lp::NotEqualNode((yyvsp[-2].expNode),(yyvsp[0].expNode));
@@ -2259,7 +2259,7 @@ yyreduce:
     break;
 
   case 59:
-#line 695 "interpreter.y"
+#line 688 "interpreter.y"
                 {
 		  // Create a new "logic and" node	
  			(yyval.expNode) = new lp::AndNode((yyvsp[-2].expNode),(yyvsp[0].expNode));
@@ -2268,7 +2268,7 @@ yyreduce:
     break;
 
   case 60:
-#line 701 "interpreter.y"
+#line 694 "interpreter.y"
                 {
 		  // Create a new "logic or" node	
  			(yyval.expNode) = new lp::OrNode((yyvsp[-2].expNode),(yyvsp[0].expNode));
@@ -2277,7 +2277,7 @@ yyreduce:
     break;
 
   case 61:
-#line 707 "interpreter.y"
+#line 700 "interpreter.y"
                 {
 		  // Create a new "logic negation" node	
  			(yyval.expNode) = new lp::NotNode((yyvsp[0].expNode));
@@ -2286,7 +2286,7 @@ yyreduce:
     break;
 
   case 62:
-#line 716 "interpreter.y"
+#line 709 "interpreter.y"
                         {
 			    // Create a new list STL
 				(yyval.parameters) = new std::list<lp::ExpNode *>(); 
@@ -2295,7 +2295,7 @@ yyreduce:
     break;
 
   case 63:
-#line 722 "interpreter.y"
+#line 715 "interpreter.y"
                         {
 				(yyval.parameters) = (yyvsp[0].parameters);
 
@@ -2306,7 +2306,7 @@ yyreduce:
     break;
 
   case 64:
-#line 732 "interpreter.y"
+#line 725 "interpreter.y"
                         {
 			    // Create a new list STL
 				(yyval.parameters) = new std::list<lp::ExpNode *>(); 
@@ -2315,7 +2315,7 @@ yyreduce:
     break;
 
   case 65:
-#line 738 "interpreter.y"
+#line 731 "interpreter.y"
                         {
 				// Get the list of expressions
 				(yyval.parameters) = (yyvsp[0].parameters);
@@ -2559,7 +2559,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 749 "interpreter.y"
+#line 742 "interpreter.y"
 
 
 
