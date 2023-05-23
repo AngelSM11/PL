@@ -167,7 +167,7 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 %type <sCase> case
 
 // New in example 17: if, while, block
-%type <st> stmt asgn print read if while block for repeat
+%type <st> stmt asgn print read if while block for repeat clear_screen
 
 %type <prog> program
 
@@ -190,6 +190,9 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 %token REPEAT UNTIL FOR FROM ENDFOR STEP TO 
 %token CASE VALUE DEFAULT ENDCASE
 %token CADENA COMENTARIO COMENTARIOSIMPLE
+%token CONCATENATION
+%token NOT OR AND
+%token CLEARSCREEN
 
 /* NEW in example 17 */
 %token LETFCURLYBRACKET RIGHTCURLYBRACKET
@@ -217,13 +220,12 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 
 /*******************************************************/
 /* NEW in example 15 */
-%left OR
 
-%left AND
 
 %nonassoc GREATER_OR_EQUAL LESS_OR_EQUAL GREATER_THAN LESS_THAN  EQUAL NOT_EQUAL
 
-%left NOT
+%left NOT AND OR
+
 /*******************************************************/
 
 /* MODIFIED in example 3 */
@@ -331,6 +333,7 @@ stmt: SEMICOLON  /* Empty statement: ";" */
 		// Default action
 		// $$ = $1;
 	 }
+	
 	| for
 	{
 		// Default action
@@ -594,6 +597,25 @@ exp:	NUMBER
 		  $$ = new lp::VariableNode($1);
 		}
 
+	|exp AND exp 
+	 	{
+		  // Create a new "logic and" node	
+ 			$$ = new lp::AndNode($1,$3);
+		}
+
+
+	| exp OR exp 
+				{
+				// Create a new "logic or" node	
+					$$ = new lp::OrNode($1,$3);
+				}
+		
+	| NOT exp 
+				{
+				// Create a new "logic negation" node	
+					$$ = new lp::NotNode($2);
+				}
+		
 	 | CONSTANT
 		{
 		  // Create a new constant node	
@@ -684,23 +706,6 @@ exp:	NUMBER
  			$$ = new lp::NotEqualNode($1,$3);
 		}
 
-    | exp AND exp 
-	 	{
-		  // Create a new "logic and" node	
- 			$$ = new lp::AndNode($1,$3);
-		}
-
-    | exp OR exp 
-	 	{
-		  // Create a new "logic or" node	
- 			$$ = new lp::OrNode($1,$3);
-		}
-
-    | NOT exp 
-	 	{
-		  // Create a new "logic negation" node	
- 			$$ = new lp::NotNode($2);
-		}
 ;
 
 

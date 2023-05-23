@@ -39,6 +39,8 @@
 
 #include "../table/numericVariable.hpp"
 
+#include "../table/stringVariable.hpp"
+
 extern lp::Table table; //!< External Table of Symbols
 /*********************************************/
 
@@ -69,6 +71,8 @@ CADENA		"'"([^']|"\\\'")*"'"?
 
 comentario_simple \#.*
 
+
+
 /* NEW in example 3 */
 /* STATE  */
 %x ERROR Q1
@@ -89,6 +93,8 @@ comentario_simple \#.*
 <Q1>.|\n {;}
 
 {comentario_simple} {;}
+
+
 
 
 [ \t] 	{ ; }    /* skip white space and tabular */
@@ -120,6 +126,7 @@ comentario_simple \#.*
 {comentario_simple}	{
 	return COMENTARIOSIMPLE;
 }
+
 
 {NUMBER1}|{NUMBER2}|{NUMBER3} {
 					  /* MODIFIED in example 4 */
@@ -207,15 +214,13 @@ comentario_simple \#.*
 
 "<"		{ return LESS_THAN; }		/* NEW in example 15 */
 
-"!"		{ return NOT; }				/* NEW in example 15 */
-
-"||"	{ return OR; }				/* NEW in example 15 */
-
-"&&"	{ return AND; }				/* NEW in example 15 */
 
 "{"		{ return LETFCURLYBRACKET; } 	/* NEW in example 17 */
 
 "}"		{ return RIGHTCURLYBRACKET; }	/* NEW in example 17 */
+"||"	{ return CONCATENATION; }	
+"clear"	{std::cout << CLEAR_SCREEN;} 
+
 
 
 

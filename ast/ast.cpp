@@ -985,7 +985,7 @@ bool lp::NotEqualNode::evaluateBool()
 
 void lp::AndNode::printAST()
 {
-  std::cout << "AndNode: &&" << std::endl;
+  std::cout << "AndNode: and" << std::endl;
   std::cout << "\t"; 
 	this->_left->printAST();
 	std::cout << "\t"; 
@@ -1020,7 +1020,7 @@ bool lp::AndNode::evaluateBool()
 
 void lp::OrNode::printAST()
 {
-  std::cout << "OrNode: ||" << std::endl;
+  std::cout << "OrNode: or" << std::endl;
   std::cout << "\t"; 
 	this->_left->printAST();
 	std::cout << "\t"; 
@@ -1050,12 +1050,13 @@ bool lp::OrNode::evaluateBool()
 
 
 
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 void lp::NotNode::printAST()
 {
-  std::cout << "NotNode: !" << std::endl;
+  std::cout << "NotNode: not" << std::endl;
   std::cout << "\t";
   this->_exp->printAST();
 }

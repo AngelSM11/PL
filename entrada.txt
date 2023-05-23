@@ -8,3 +8,5 @@ case(dato)
     default: 
         print (3);
 end_case
+
+clear_screen;

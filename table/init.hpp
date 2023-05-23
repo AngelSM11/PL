@@ -92,8 +92,12 @@ static struct {
 						{"value",	VALUE},
 						{"default", DEFAULT},
 						{"end_case", ENDCASE},
+						{"not", NOT},
+						{"and", AND},
+						{"or", OR},
 	                    {"",      0}
 	                   };
+					   
 
 
 

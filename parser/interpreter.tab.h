@@ -77,36 +77,38 @@ extern int yydebug;
     CADENA = 283,
     COMENTARIO = 284,
     COMENTARIOSIMPLE = 285,
-    LETFCURLYBRACKET = 286,
-    RIGHTCURLYBRACKET = 287,
-    ASSIGNMENT = 288,
-    COMMA = 289,
-    COLON = 290,
-    NUMBER = 291,
-    BOOL = 292,
-    VARIABLE = 293,
-    UNDEFINED = 294,
-    CONSTANT = 295,
-    BUILTIN = 296,
-    OR = 297,
-    AND = 298,
-    GREATER_OR_EQUAL = 299,
-    LESS_OR_EQUAL = 300,
-    GREATER_THAN = 301,
-    LESS_THAN = 302,
-    EQUAL = 303,
-    NOT_EQUAL = 304,
-    NOT = 305,
-    PLUS = 306,
-    MINUS = 307,
-    MULTIPLICATION = 308,
-    DIVISION = 309,
-    DIVISION_ENTERA = 310,
-    MODULO = 311,
-    LPAREN = 312,
-    RPAREN = 313,
-    UNARY = 314,
-    POWER = 315
+    CONCATENATION = 286,
+    NOT = 287,
+    OR = 288,
+    AND = 289,
+    CLEARSCREEN = 290,
+    LETFCURLYBRACKET = 291,
+    RIGHTCURLYBRACKET = 292,
+    ASSIGNMENT = 293,
+    COMMA = 294,
+    COLON = 295,
+    NUMBER = 296,
+    BOOL = 297,
+    VARIABLE = 298,
+    UNDEFINED = 299,
+    CONSTANT = 300,
+    BUILTIN = 301,
+    GREATER_OR_EQUAL = 302,
+    LESS_OR_EQUAL = 303,
+    GREATER_THAN = 304,
+    LESS_THAN = 305,
+    EQUAL = 306,
+    NOT_EQUAL = 307,
+    PLUS = 308,
+    MINUS = 309,
+    MULTIPLICATION = 310,
+    DIVISION = 311,
+    DIVISION_ENTERA = 312,
+    MODULO = 313,
+    LPAREN = 314,
+    RPAREN = 315,
+    UNARY = 316,
+    POWER = 317
   };
 #endif
 
@@ -129,7 +131,7 @@ union YYSTYPE
   lp::DefaultNode *iCase;							
   lp::BlockCaseNode *sCase; 			
 
-#line 133 "interpreter.tab.h"
+#line 135 "interpreter.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

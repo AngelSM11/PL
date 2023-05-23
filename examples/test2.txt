@@ -17,7 +17,7 @@ for i from 2 to 4 step 1 do
 
 d:=4;
 
-while (d > 2)
+while (d > 2 and d > 3)
 					
                     d:=d-1;
                     
@@ -34,7 +34,3 @@ repeat
                     
 				until(d>1); 
 print (d);
-
-
-
-
