@@ -82,33 +82,35 @@ extern int yydebug;
     OR = 288,
     AND = 289,
     CLEARSCREEN = 290,
-    LETFCURLYBRACKET = 291,
-    RIGHTCURLYBRACKET = 292,
-    ASSIGNMENT = 293,
-    COMMA = 294,
-    COLON = 295,
-    NUMBER = 296,
-    BOOL = 297,
-    VARIABLE = 298,
-    UNDEFINED = 299,
-    CONSTANT = 300,
-    BUILTIN = 301,
-    GREATER_OR_EQUAL = 302,
-    LESS_OR_EQUAL = 303,
-    GREATER_THAN = 304,
-    LESS_THAN = 305,
-    EQUAL = 306,
-    NOT_EQUAL = 307,
-    PLUS = 308,
-    MINUS = 309,
-    MULTIPLICATION = 310,
-    DIVISION = 311,
-    DIVISION_ENTERA = 312,
-    MODULO = 313,
-    LPAREN = 314,
-    RPAREN = 315,
-    UNARY = 316,
-    POWER = 317
+    PLACE = 291,
+    LETFCURLYBRACKET = 292,
+    RIGHTCURLYBRACKET = 293,
+    ASSIGNMENT = 294,
+    COMMA = 295,
+    COLON = 296,
+    NUMBER = 297,
+    BOOL = 298,
+    VARIABLE = 299,
+    UNDEFINED = 300,
+    CONSTANT = 301,
+    BUILTIN = 302,
+    GREATER_OR_EQUAL = 303,
+    LESS_OR_EQUAL = 304,
+    GREATER_THAN = 305,
+    LESS_THAN = 306,
+    EQUAL = 307,
+    NOT_EQUAL = 308,
+    PLUS = 309,
+    MINUS = 310,
+    MULTIPLICATION = 311,
+    DIVISION = 312,
+    DIVISION_ENTERA = 313,
+    MODULO = 314,
+    LPAREN = 315,
+    RPAREN = 316,
+    UNARY = 317,
+    POWER = 318,
+    
   };
 #endif
 
@@ -131,7 +133,7 @@ union YYSTYPE
   lp::DefaultNode *iCase;							
   lp::BlockCaseNode *sCase; 			
 
-#line 135 "interpreter.tab.h"
+#line 136 "interpreter.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

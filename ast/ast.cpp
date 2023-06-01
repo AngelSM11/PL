@@ -1719,3 +1719,43 @@ void lp::AST::evaluate()
   }
 }
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+void lp::Delete_WindowStmt::printAST()
+{
+	std::cout << BCYAN << ITALIC;
+	std::cout << "Delete_WindowStmt: ";
+	std::cout << RESET;
+	std::cout << "\n" <<std::endl;
+}
+
+void lp::Delete_WindowStmt::evaluate()
+{
+	std::cout << CLEAR_SCREEN;
+	PLACE(0,0);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+/* NEW in v. 0.0.6 */
+
+void lp::PlaceStmt::printAST()
+{
+    std::cout << "PlaceStmt: print" << std::endl;
+    std::cout << "\t";
+    this->_expX->printAST();
+    this->_expY->printAST();
+    std::cout << std::endl;
+}
+
+void lp::PlaceStmt::evaluate()
+{
+    if (this->_expX->getType() != NUMBER or this->_expY->getType() != NUMBER){
+		printf("Error");
+	}
+       
+
+    PLACE((int)this->_expX->evaluateNumber(), (int)this->_expY->evaluateNumber());
+}

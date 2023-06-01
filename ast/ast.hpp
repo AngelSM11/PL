@@ -2035,6 +2035,94 @@ class BlockStmt : public Statement
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 
+
+/*!	
+  \class   BlockStmt
+  \brief   Definition of atributes and methods of BlockStmt class
+  \note    BlockStmt Class publicly inherits from Statement class 
+		       and adds its own printAST and evaluate functions
+*/
+class Delete_WindowStmt : public Statement 
+{
+ private:
+   std::list<Statement *> *_stmts;  //!< List of statements
+
+  public:
+/*!		
+	\brief Constructor of  WhileStmt
+	\param stmtList: list of Statement
+	\post  A new BlockStmt is created with the parameters
+*/
+  Delete_WindowStmt(std::list<Statement *> *stmtList): _stmts(stmtList)
+	{
+		// Empty
+	}
+
+
+/*!
+	\brief   Print the AST for BlockStmt
+	\return  void
+	\sa		   evaluate
+*/
+  void printAST();
+
+/*!	
+	\brief   Evaluate the BlockStmt
+	\return  void
+	\sa	   	 printAST
+*/
+  void evaluate();
+};
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    
+
+    /*!
+      \class   PlaceStmt
+      \brief   Definition of atributes and methods of PlaceStmt class
+    */
+    class PlaceStmt : public Statement
+    {
+    private:
+        ExpNode *_expX; //!< Expression of the x coordinate
+        ExpNode *_expY; //!< Expression of the y coordinate
+
+    public:
+        /*!
+            \brief Constructor of PlaceStmt
+            \param expX: Pointer to the expression of the x coordinate
+            \param expY: Pointer to the expression of the y coordinate
+            \post  A new PlaceStmt is created with the parameter
+        */
+        PlaceStmt(ExpNode *expX, ExpNode *expY)
+        {
+            this->_expX = expX;
+            this->_expY = expY;
+        }
+
+        /*!
+            \brief   print the PlaceStmt
+            \return  void
+            \sa		 evaluate()
+        */
+        void printAST();
+
+        /*!
+            \brief   evaluate the PlaceStmt
+            \return  void
+            \sa		 print()
+        */
+        void evaluate();
+    };
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
 /*!	
   \class   AST
   \brief   Definition of atributes and methods of AST class

@@ -219,7 +219,6 @@ comentario_simple \#.*
 
 "}"		{ return RIGHTCURLYBRACKET; }	/* NEW in example 17 */
 "||"	{ return CONCATENATION; }	
-"clear"	{std::cout << CLEAR_SCREEN;} 
 
 
 

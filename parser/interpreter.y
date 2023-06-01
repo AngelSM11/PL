@@ -192,7 +192,7 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 %token CADENA COMENTARIO COMENTARIOSIMPLE
 %token CONCATENATION
 %token NOT OR AND
-%token CLEARSCREEN
+%token CLEARSCREEN PLACE
 
 /* NEW in example 17 */
 %token LETFCURLYBRACKET RIGHTCURLYBRACKET
@@ -355,8 +355,25 @@ stmt: SEMICOLON  /* Empty statement: ";" */
 		// Default action
 		// $$ = $1;
 	 }
+	| place
+	 {
+		// Default action
+		// $$ = $1;
+	 }
+	
 ;
 
+
+clear_screen: CLEARSCREEN
+		{
+			$$=new lp::Delete_WindowsStmt();
+		}
+;
+
+place: PLACE LPAREN exp COMMA exp RPAREN
+		{
+			$$  new lp::PlaceStmt($3, $5);
+		}
 
 block: LETFCURLYBRACKET stmtlist RIGHTCURLYBRACKET  
 		{
