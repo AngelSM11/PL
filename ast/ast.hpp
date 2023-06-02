@@ -74,6 +74,11 @@ namespace lp
 		return false;
 	}
 
+	virtual std::string evaluateCadena()
+	{
+		return "";
+	}
+
 };
 
 
@@ -132,7 +137,9 @@ class VariableNode : public ExpNode
 	*/
 	  bool evaluateBool();
 
+	  std::string evaluateCadena();
 };
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -190,7 +197,53 @@ class ConstantNode : public ExpNode
 
 
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
 
+/*!	
+  \class ConstantNode
+  \brief Definition of atributes and methods of ConstantNode class
+  \note  ConstantNode Class publicly inherits from ExpNode class
+*/
+class CadenaNode : public ExpNode 
+{
+	private:
+	  std::string _id; //!< Name of the ConstantNode
+
+	public:
+
+	/*!		
+		\brief Constructor of ConstantNode
+		\param value: double
+		\post  A new ConstantNode is created with the name of the parameter
+	*/
+	  CadenaNode(std::string value)
+		{
+			this->_id = value; 
+		}
+
+	/*!	
+		\brief   Type of the Constant
+		\return  int
+		\sa		   printAST, evaluateNumber, evaluateBool
+	*/
+	 int getType();
+
+	/*!
+		\brief   Print the AST for Constant
+		\return  void
+		\sa		   getType, evaluateNumber, evaluateBool
+	*/
+	  void printAST();
+
+	/*!	
+		\brief   Evaluate the Constant as NUMBER
+		\return  double
+		\sa		   getType, printAST, 
+	*/
+
+	  std::string evaluateCadena();
+};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -350,7 +403,6 @@ class LogicalUnaryOperatorNode : public UnaryOperatorNode
 };
 
 
-
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -496,6 +548,37 @@ class NumericOperatorNode : public OperatorNode
 
 
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+/*!	
+  \class   LogicalUnaryOperatorNode
+  \brief   Definition of atributes and methods of UnaryOperatorNode class
+  \note    UnaryOperatorNode Class publicly inherits from UnaryOperatorNode class
+  \warning Abstract class, because it does not redefine the printAST method of ExpNode
+*/
+class StringOperatorNode : public OperatorNode 
+{
+ public:
+
+/*!		
+	\brief Constructor of LogicalUnaryOperatorNode uses UnaryOperatorNode's constructor as member initializer
+	\param expression: pointer to ExpNode
+	\post  A new NumericUnaryOperatorNode is created with the parameters
+	\note  Inline function
+*/
+  StringOperatorNode(ExpNode *expression1, ExpNode *expression2): OperatorNode(expression1, expression2)
+	{
+		// Empty
+	}
+
+	/*!	
+	\brief   Get the type of the child expression
+	\return  int
+	\sa		   printAST
+	*/
+
+};
 //////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -558,6 +641,8 @@ class LogicalOperatorNode : public OperatorNode
 	*/
 	int getType();
 };
+
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -1388,6 +1473,48 @@ class NotNode : public LogicalUnaryOperatorNode
   bool evaluateBool();
 };
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+/*!	
+  \class   AndNode
+  \brief   Definition of atributes and methods of AndNode class
+  \note    AndNode Class publicly inherits from LogicalOperatorNode class 
+		       and adds its own printAST and evaluate functions
+*/
+class ConcatenationNode : public StringOperatorNode 
+{
+  public:
+
+/*!		
+	\brief Constructor of AndNode uses LogicalOperatorNode's constructor as members initializer
+	\param L: pointer to ExpNode
+	\param R: pointer to ExpNode
+	\post  A new AndNode is created with the parameter
+*/
+  ConcatenationNode(ExpNode *L, ExpNode *R): StringOperatorNode(L,R) 
+  {
+		// Empty
+  }
+
+/*!
+	\brief   Print the AST for AndNode
+	\return  void
+	\sa		   evaluateBool
+*/
+  void printAST();
+
+	int getType();
+/*!	
+	\brief   Evaluate the AndNode
+	\return  bool
+	\sa		   printAST
+*/
+  std::string evaluateCadena();
+};
+
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 
@@ -1539,7 +1666,46 @@ class PrintStmt: public Statement
   void evaluate();
 };
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
 
+/*!	
+  \class   PrintStmt
+  \brief   Definition of atributes and methods of PrintStmt class
+  \note    PrintStmt Class publicly inherits from Statement class 
+		   and adds its own print and evaluate functions
+  \warning  In this class, printAST and evaluate functions have the same meaning.
+*/
+class PrintStringStmt: public Statement 
+{
+ private:
+  ExpNode *_exp; //!< Expresssion the print statement
+
+ public:
+/*!		
+	\brief Constructor of PrintStmt 
+	\param expression: pointer to ExpNode
+	\post  A new PrintStmt is created with the parameter
+*/
+  PrintStringStmt(ExpNode *expression)
+	{
+		this->_exp = expression;
+	}
+
+/*!
+	\brief   Print the AST for PrintStmt
+	\return  void
+	\sa		   evaluate
+*/
+  void printAST();
+
+/*!	
+	\brief   Evaluate the PrintStmt
+	\return  double
+	\sa		   printAST
+*/
+  void evaluate();
+};
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1585,7 +1751,47 @@ class ReadStmt : public Statement
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
+/*!	
+  \class   ReadStmt
+  \brief   Definition of atributes and methods of ReadStmt class
+  \note    ReadStmt Class publicly inherits from Statement class 
+		   and adds its own printAST and evaluate functions
+*/
+class ReadStringStmt : public Statement 
+{
+  private:
+	std::string _id; //!< Name of the ReadStmt
+	
 
+  public:
+/*!		
+	\brief Constructor of ReadStmt
+	\param id: string, name of the variable of the ReadStmt
+	\post  A new ReadStmt is created with the parameter
+*/
+  ReadStringStmt(std::string id)
+	{
+		this->_id = id;
+	}
+
+/*!
+	\brief   Print the AST for ReadStmt
+	\return  void
+	\sa		   evaluate
+*/
+  void printAST();
+
+/*!	
+	\brief   Evaluate the ReadStmt
+	\return  void
+	\sa		   printAST
+*/
+  void evaluate();
+};
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
 
 /*!	
   \class   EmptyStmt
@@ -2044,8 +2250,6 @@ class BlockStmt : public Statement
 */
 class Delete_WindowStmt : public Statement 
 {
- private:
-   std::list<Statement *> *_stmts;  //!< List of statements
 
   public:
 /*!		
@@ -2053,7 +2257,7 @@ class Delete_WindowStmt : public Statement
 	\param stmtList: list of Statement
 	\post  A new BlockStmt is created with the parameters
 */
-  Delete_WindowStmt(std::list<Statement *> *stmtList): _stmts(stmtList)
+  Delete_WindowStmt()
 	{
 		// Empty
 	}

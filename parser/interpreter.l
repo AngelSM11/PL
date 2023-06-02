@@ -67,7 +67,7 @@ NUMBER3 {NUMBER2}[eE][+\-]{DIGIT}+
 
 IDENTIFIER  {LETTER}(_?({LETTER}|{DIGIT}))*
 
-CADENA		"'"([^']|"\\\'")*"'"?
+CADENA		"'"([^\\]|"\\\'"|\\n|\\t)*"'"
 
 comentario_simple \#.*
 

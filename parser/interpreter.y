@@ -167,7 +167,7 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 %type <sCase> case
 
 // New in example 17: if, while, block
-%type <st> stmt asgn print read if while block for repeat clear_screen
+%type <st> stmt asgn print print_string read read_string if while block for repeat clear_screen place
 
 %type <prog> program
 
@@ -184,12 +184,11 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 
 /* AÑADIDOS NUEVOS*/
 %token READ READSTRING
-%token WRITE WRITESTRING
 %token IF THEN ELSE ENDIF
 %token WHILE DO ENDWHILE
 %token REPEAT UNTIL FOR FROM ENDFOR STEP TO 
 %token CASE VALUE DEFAULT ENDCASE
-%token CADENA COMENTARIO COMENTARIOSIMPLE
+%token COMENTARIO COMENTARIOSIMPLE
 %token CONCATENATION
 %token NOT OR AND
 %token CLEARSCREEN PLACE
@@ -214,7 +213,7 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 /*******************************************/
 
 /* MODIFIED in examples 11, 13 */
-%token <string> VARIABLE UNDEFINED CONSTANT BUILTIN
+%token <string> VARIABLE CADENA UNDEFINED CONSTANT BUILTIN
 
 /* Left associativity */
 
@@ -316,7 +315,17 @@ stmt: SEMICOLON  /* Empty statement: ";" */
 		// Default action
 		// $$ = $1;
 	  }
+	| print_string SEMICOLON
+	  {
+		// Default action
+		// $$ = $1;
+	  }
 	| read SEMICOLON
+	  {
+		// Default action
+		// $$ = $1;
+	  }
+	| read_string SEMICOLON
 	  {
 		// Default action
 		// $$ = $1;
@@ -360,19 +369,24 @@ stmt: SEMICOLON  /* Empty statement: ";" */
 		// Default action
 		// $$ = $1;
 	 }
+	| clear_screen
+	 {
+		// Default action
+		// $$ = $1;
+	 }
 	
 ;
 
 
 clear_screen: CLEARSCREEN
 		{
-			$$=new lp::Delete_WindowsStmt();
+			$$=new lp::Delete_WindowStmt();
 		}
 ;
 
 place: PLACE LPAREN exp COMMA exp RPAREN
 		{
-			$$  new lp::PlaceStmt($3, $5);
+			$$ = new lp::PlaceStmt($3, $5);
 		}
 
 block: LETFCURLYBRACKET stmtlist RIGHTCURLYBRACKET  
@@ -508,6 +522,19 @@ asgn:   VARIABLE ASSIGNMENT exp
 			$$ = new lp::AssignmentStmt($1, (lp::AssignmentStmt *) $3);
 		}
 
+	/* | CADENA ASSIGNMENT exp 
+		{ 
+			// Create a new assignment node
+			$$ = new lp::AssignmentStmt($1, $3);
+		}
+
+	|  CADENA ASSIGNMENT asgn 
+		{ 
+			// Create a new assignment node
+			$$ = new lp::AssignmentStmt($1, (lp::AssignmentStmt *) $3);
+		}
+
+	*/
 	   /* NEW in example 11 */ 
 	| CONSTANT ASSIGNMENT exp 
 		{   
@@ -518,6 +545,7 @@ asgn:   VARIABLE ASSIGNMENT exp
 		{   
  			execerror("Semantic error in multiple assignment: it is not allowed to modify a constant ",$1);
 		}
+
 ;
 
 print:  PRINT LPAREN exp RPAREN 
@@ -527,16 +555,30 @@ print:  PRINT LPAREN exp RPAREN
 		}
 ;	
 
+print_string:  PRINTSTRING LPAREN exp RPAREN
+		{
+			// Create a new print node
+			 $$ = new lp::PrintStringStmt($3);
+		}
+;
+
 read:  READ LPAREN VARIABLE RPAREN  
 		{
 			// Create a new read node
-			 $$ = new lp::ReadStmt($3);
+			 $$ = new lp::ReadStringStmt($3);
 		}
 
   	  /* NEW rule in example 11 */
 	| READ LPAREN CONSTANT RPAREN  
 		{   
  			execerror("Semantic error in \"read statement\": it is not allowed to modify a constant ",$3);
+		}
+;
+
+read_string:  READSTRING LPAREN VARIABLE RPAREN  
+		{
+			// Create a new read node
+			 $$ = new lp::ReadStringStmt($3);
 		}
 ;
 
@@ -614,6 +656,12 @@ exp:	NUMBER
 		  $$ = new lp::VariableNode($1);
 		}
 
+	| CADENA
+		{
+		  // Create a new variable node	
+		  $$ = new lp::CadenaNode($1);
+		}
+
 	|exp AND exp 
 	 	{
 		  // Create a new "logic and" node	
@@ -625,6 +673,11 @@ exp:	NUMBER
 				{
 				// Create a new "logic or" node	
 					$$ = new lp::OrNode($1,$3);
+				}
+
+	| exp CONCATENATION exp
+				{
+					$$ = new lp::ConcatenationNode($1,$3);
 				}
 		
 	| NOT exp 

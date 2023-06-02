@@ -88,6 +88,7 @@ static struct {
     					{"step", STEP},
 						{"repeat", REPEAT},
 						{"until", UNTIL},
+						{"clear_screen", CLEARSCREEN},
 						{"case", CASE},
 						{"value",	VALUE},
 						{"default", DEFAULT},

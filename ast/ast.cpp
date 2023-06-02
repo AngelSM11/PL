@@ -26,6 +26,7 @@
 
 // 
 #include "../table/numericVariable.hpp"
+#include "../table/stringVariable.hpp"
 #include "../table/logicalVariable.hpp"
 
 #include "../table/numericConstant.hpp"
@@ -138,6 +139,28 @@ bool lp::VariableNode::evaluateBool()
 	return result;
 }
 
+std::string lp::VariableNode::evaluateCadena() 
+{ 
+	std::string result = "";
+
+	if (this->getType() == CADENA)
+	{
+		// Get the identifier in the table of symbols as LogicalVariable
+		lp::StringVariable *var = (lp::StringVariable *) table.getSymbol(this->_id);
+
+		// Copy the value of the LogicalVariable
+		result = var->getValue();
+	}
+	else
+	{
+		warning("Runtime error in evaluateBool(): the variable is not boolean",
+				   this->_id);
+	}
+
+	// Return the value of the LogicalVariable
+	return result;
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -200,6 +223,23 @@ bool lp::ConstantNode::evaluateBool()
 
 	// Return the value of the LogicalVariable
 	return result;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+int lp::CadenaNode::getType(){
+	return CADENA;
+}
+
+void lp::CadenaNode::printAST() 
+{
+  std::cout << "CadenaNode: " << this->_id;
+  std::cout << " (Type: " << this->getType() << ")" << std::endl;
+}
+
+std::string lp::CadenaNode::evaluateCadena() 
+{ 
+	return this->_id;
+
 }
 
 
@@ -1077,7 +1117,44 @@ bool lp::NotNode::evaluateBool()
 	return result;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
 
+
+void lp::ConcatenationNode::printAST()
+{
+  std::cout << "StringNode: and" << std::endl;
+  std::cout << "\t"; 
+	this->_left->printAST();
+	std::cout << "\t"; 
+	this->_right->printAST();
+}
+
+std::string lp::ConcatenationNode::evaluateCadena() 
+{
+	std::string result = "";
+
+	if (this->getType() == CADENA)
+	{
+		std::string left, right;
+
+		left = this->_right->evaluateCadena();
+		right = this->_right->evaluateCadena();
+
+		result = left +right;
+	}
+	else
+	{
+		warning("Runtime error: incompatible types of parameters for ", "operator Concatenation");
+	}
+
+	return result;
+}
+
+int lp::ConcatenationNode::getType()
+{
+	return CADENA;
+}
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1177,6 +1254,35 @@ void lp::AssignmentStmt::evaluate()
 			}
 			break;
 
+			case CADENA:
+			{
+				std::string value;
+				// evaluate the expression as BOOL
+				//TODO CREAR NODO CADENAEVALUATE() PARA EL TIPO DEL VALUE
+
+				if (firstVar->getType() == CADENA)
+				{
+				  	// Get the identifier in the table of symbols as LogicalVariable
+					lp::StringVariable *v = (lp::StringVariable *) table.getSymbol(this->_id);
+
+					// Assignment the value to the identifier in the table of symbols
+					v->setValue(value);
+				}
+				// The type of variable is not BOOL
+				else
+				{
+					// Delete the variable from the table of symbols 
+					table.eraseSymbol(this->_id);
+
+					// Insert the variable in the table of symbols as NumericVariable 
+					// with the type BOOL and the value 
+					lp::StringVariable *v = new lp::StringVariable(this->_id,
+											VARIABLE,CADENA,value);
+					table.installSymbol(v);
+				}
+			}
+			break;
+
 			default:
 				warning("Runtime error: incompatible type of expression for ", "Assigment");
 		}
@@ -1261,6 +1367,38 @@ void lp::AssignmentStmt::evaluate()
 			}
 			break;
 
+			case CADENA:
+			{
+				/* Get the identifier of the previous asgn in the table of symbols as LogicalVariable */
+				lp::StringVariable *secondVar = (lp::StringVariable *) table.getSymbol(this->_asgn->_id);
+				// Check the type of the first variable
+				if (firstVar->getType() == CADENA)
+				{
+				/* Get the identifier of the first variable in the table of symbols as LogicalVariable */
+				lp::StringVariable *firstVar = (lp::StringVariable *) table.getSymbol(this->_id);
+				  	// Get the identifier o f the in the table of symbols as NumericVariable
+//					lp::NumericVariable *n = (lp::NumericVariable *) table.getSymbol(this->_id);
+
+					// Assignment the value of the second variable to the first variable
+					firstVar->setValue(secondVar->getValue());
+
+				}
+				// The type of variable is not BOOL
+				else
+				{
+					// Delete the first variable from the table of symbols 
+					table.eraseSymbol(this->_id);
+
+					// Insert the first variable in the table of symbols as NumericVariable 
+					// with the type BOOL and the value of the previous variable 
+					lp::StringVariable *firstVar = new lp::StringVariable(this->_id,
+											VARIABLE,CADENA,secondVar->getValue());
+					table.installSymbol(firstVar);
+				}
+			}
+			break;
+
+
 			default:
 				warning("Runtime error: incompatible type of expression for ", "Assigment");
 		}
@@ -1304,6 +1442,38 @@ void lp::PrintStmt::evaluate()
 	}
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+void lp::PrintStringStmt::printAST() 
+{
+  std::cout << "printStringStmt: printAST"  << std::endl;
+  std::cout << "\t";
+  this->_exp->printAST();
+  std::cout << std::endl;
+}
+
+
+void lp::PrintStringStmt::evaluate() 
+{
+	std::string var= this->_exp->evaluateCadena();
+	
+	for(size_t i=0;i<var.size();i++){
+		if(var[i]=='\\' and var[i+1]=='n'){
+			std::cout<<"\n";
+			i++;
+		}
+		else if(var[i]=='\\' and var[i+1]=='t'){
+			std::cout<<"\t";
+			i++;
+		}
+		else{
+			std::cout<<var[i];
+		}
+	}
+	
+
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -1352,7 +1522,49 @@ void lp::ReadStmt::evaluate()
 	}
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
 
+void lp::ReadStringStmt::printAST() 
+{
+  std::cout << "ReadStringStmt: read_string"  << std::endl;
+  std::cout << "\t";
+  std::cout << this->_id;
+  std::cout << std::endl;
+}
+
+
+void lp::ReadStringStmt::evaluate() 
+{   
+	std::string value;
+	std::getline(std::cin,value);
+
+	/* Get the identifier in the table of symbols as Variable */
+	
+	lp::Variable *var = (lp::Variable *) table.getSymbol(this->_id);
+	// Check if the type of the variable is NUMBER
+	if (var->getType() == CADENA)
+	{
+		/* Get the identifier in the table of symbols as NumericVariable */
+		lp::StringVariable *c = (lp::StringVariable *) table.getSymbol(this->_id);
+		c->setValue(value);	
+		/* Assignment the read value to the identifier */
+		std::cout<<c->getValue();
+	}
+	// The type of variable is not NUMBER
+	else
+	{
+		// Delete $1 from the table of symbols as Variable
+		table.eraseSymbol(this->_id);
+
+			// Insert $1 in the table of symbols as NumericVariable 
+		// with the type NUMBER and the read value 
+		lp::StringVariable *c = new lp::StringVariable(this->_id, 
+									  VARIABLE,CADENA,value);
+
+		table.installSymbol(c);
+	}
+}
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1734,12 +1946,10 @@ void lp::Delete_WindowStmt::printAST()
 void lp::Delete_WindowStmt::evaluate()
 {
 	std::cout << CLEAR_SCREEN;
-	PLACE(0,0);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
-/* NEW in v. 0.0.6 */
 
 void lp::PlaceStmt::printAST()
 {

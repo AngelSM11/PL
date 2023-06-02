@@ -1,12 +1,1 @@
-dato := 1;
-
-case(dato)
-    value 1:
-        print (dato);
-    value 2:
-        print (34);
-    default: 
-        print (3);
-end_case
-
-clear_screen;
+print_string('rfe3');
