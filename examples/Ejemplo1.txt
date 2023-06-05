@@ -1,0 +1,25 @@
+<<Ejemplo 1: Print, Read, 
+Print_String, Read_String>>
+
+#Print_String, Read_String
+
+print_string(' Introduce una cadena ');
+
+read_string(dato);
+
+print_string(' La cadena es:');
+
+print_string(dato);
+
+read_string(pausa);
+
+#Print, Read
+
+print_string(' Introduce un numero ');
+
+read(dato);
+
+print_string(' El número es:');
+
+print(dato);
+

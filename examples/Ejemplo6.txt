@@ -1,0 +1,35 @@
+#Ejemplo 6: CASE
+
+ a:=3;
+ b:=1;
+auxiliar:=0;
+
+print_string(' A:');
+print(a);
+print_string(' B:');
+print(b);
+
+
+case (a)
+    value 0:
+    #Cambia variables
+	auxiliar := a;
+ 	a := b;
+	b := auxiliar;
+
+    print_string('Cambio de variables realizado');
+
+    print_string(' A:');
+    print(a);
+    print_string(' B:');
+    print(b);
+
+    value 2:
+    #No cambia variables
+    print_string('Cambio de variables no realizado');
+
+    default:
+    #Caso default
+    print_string('Caso default');
+
+end_case;

@@ -1,0 +1,16 @@
+#Ejemplo 5: for
+
+
+print_string(' Introduce un numero ');
+read(N);
+factorial := 1;
+
+for i from 2 to N step 1 do
+	            
+        factorial := factorial * i;
+end_for;
+
+print_string(' El factorial de ');
+print(N);
+print_string(' es ');
+print(factorial);

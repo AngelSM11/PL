@@ -1,0 +1,29 @@
+#Ejemplo 3: IF
+
+ a:=2;
+ b:=1;
+auxiliar:=0;
+
+print_string(' A:');
+print(a);
+print_string(' B:');
+print(b);
+
+
+if (a < b) then 
+    #Cambia variables
+	auxiliar := a;
+ 	a := b;
+	b := auxiliar;
+
+    print_string('Cambio de variables realizado');
+
+    print_string(' A:');
+    print(a);
+    print_string(' B:');
+    print(b);
+
+    else
+    #No cambia variables
+    print_string('Cambio de variables no realizado');
+end_if;

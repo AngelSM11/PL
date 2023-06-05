@@ -1,0 +1,17 @@
+r:=3;
+print(r);
+print_string('hola');
+
+while (r <> 0) do
+
+    if(r>2) then
+        print_string('hola');
+    else
+        print_string('adios');
+    end_if
+	# Cociente de la división entera
+       r:=r-1;
+       print(r);
+end_while;
+
+print(r);
