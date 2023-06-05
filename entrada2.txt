@@ -1,0 +1,9 @@
+dato:=1;
+case( dato )
+    value 1:
+        print (dato);
+    value 4:
+        print (34);
+    default: 
+        print (3);
+end_case;

@@ -1,1 +1,5 @@
-print_string('rfe3');
+dato:= 'r' || '1';
+
+print_string(dato);
+
+place(30,40);

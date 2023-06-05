@@ -89,6 +89,7 @@ static struct {
 						{"repeat", REPEAT},
 						{"until", UNTIL},
 						{"clear_screen", CLEARSCREEN},
+						{"place",PLACE_T},
 						{"case", CASE},
 						{"value",	VALUE},
 						{"default", DEFAULT},

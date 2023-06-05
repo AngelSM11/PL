@@ -191,7 +191,7 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 %token COMENTARIO COMENTARIOSIMPLE
 %token CONCATENATION
 %token NOT OR AND
-%token CLEARSCREEN PLACE
+%token CLEARSCREEN PLACE_T
 
 /* NEW in example 17 */
 %token LETFCURLYBRACKET RIGHTCURLYBRACKET
@@ -364,7 +364,7 @@ stmt: SEMICOLON  /* Empty statement: ";" */
 		// Default action
 		// $$ = $1;
 	 }
-	| place
+	| place SEMICOLON
 	 {
 		// Default action
 		// $$ = $1;
@@ -384,11 +384,11 @@ clear_screen: CLEARSCREEN
 		}
 ;
 
-place: PLACE LPAREN exp COMMA exp RPAREN
+place: PLACE_T LPAREN exp COMMA exp RPAREN
 		{
 			$$ = new lp::PlaceStmt($3, $5);
 		}
-
+;
 block: LETFCURLYBRACKET stmtlist RIGHTCURLYBRACKET  
 		{
 			// Create a new block of statements node
@@ -438,7 +438,7 @@ while:  WHILE controlSymbol cond stmt ENDWHILE
 
 repeat:  REPEAT stmt UNTIL controlSymbol cond 
 		{
-			// Create a new while statement node
+			// Create a new repeat statement node
 			$$ = new lp::RepeatStmt($5, $2);
 
 			// To control the interactive mode
@@ -496,6 +496,11 @@ value: VALUE NUMBER COLON stmtlist
 			lp::ExpNode * exp = new lp::ConstantNode($2);
 			$$ = new lp::ValueNode(exp, $4);
 		}
+	| VALUE CADENA COLON stmtlist
+		{
+			lp::ExpNode * exp = new lp::CadenaNode($2);
+			$$ = new lp::ValueNode(exp, $4);
+		}
 	
 valueDefault: COLON stmtlist
 		{			
@@ -522,7 +527,7 @@ asgn:   VARIABLE ASSIGNMENT exp
 			$$ = new lp::AssignmentStmt($1, (lp::AssignmentStmt *) $3);
 		}
 
-	/* | CADENA ASSIGNMENT exp 
+	| CADENA ASSIGNMENT exp 
 		{ 
 			// Create a new assignment node
 			$$ = new lp::AssignmentStmt($1, $3);
@@ -533,8 +538,6 @@ asgn:   VARIABLE ASSIGNMENT exp
 			// Create a new assignment node
 			$$ = new lp::AssignmentStmt($1, (lp::AssignmentStmt *) $3);
 		}
-
-	*/
 	   /* NEW in example 11 */ 
 	| CONSTANT ASSIGNMENT exp 
 		{   
@@ -565,7 +568,7 @@ print_string:  PRINTSTRING LPAREN exp RPAREN
 read:  READ LPAREN VARIABLE RPAREN  
 		{
 			// Create a new read node
-			 $$ = new lp::ReadStringStmt($3);
+			 $$ = new lp::ReadStmt($3);
 		}
 
   	  /* NEW rule in example 11 */
@@ -580,6 +583,10 @@ read_string:  READSTRING LPAREN VARIABLE RPAREN
 			// Create a new read node
 			 $$ = new lp::ReadStringStmt($3);
 		}
+		| READSTRING LPAREN CONSTANT RPAREN  
+		{   
+ 			execerror("Semantic error in \"read statement\": it is not allowed to modify a constant ",$3);
+		}
 ;
 
 
@@ -588,6 +595,13 @@ exp:	NUMBER
 			// Create a new number node
 			$$ = new lp::NumberNode($1);
 		}
+
+	| CADENA
+		{
+		  // Create a new cadena node	
+		  $$ = new lp::CadenaNode($1);
+		}
+
 
 	| 	exp PLUS exp 
 		{ 
@@ -656,12 +670,7 @@ exp:	NUMBER
 		  $$ = new lp::VariableNode($1);
 		}
 
-	| CADENA
-		{
-		  // Create a new variable node	
-		  $$ = new lp::CadenaNode($1);
-		}
-
+	
 	|exp AND exp 
 	 	{
 		  // Create a new "logic and" node	

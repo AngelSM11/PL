@@ -66,8 +66,9 @@ NUMBER2 {DIGIT}*\.{DIGIT}+
 NUMBER3 {NUMBER2}[eE][+\-]{DIGIT}+
 
 IDENTIFIER  {LETTER}(_?({LETTER}|{DIGIT}))*
+IDENTIFIERMAL  {LETTER}(__({LETTER}|{DIGIT}))*
 
-CADENA		"'"([^\\]|"\\\'"|\\n|\\t)*"'"
+CADENA		"'"([^'\\]|"\\\'"|\\n|\\t)*"'"
 
 comentario_simple \#.*
 
@@ -123,9 +124,6 @@ comentario_simple \#.*
 	return CADENA;
 }
 
-{comentario_simple}	{
-	return COMENTARIOSIMPLE;
-}
 
 
 {NUMBER1}|{NUMBER2}|{NUMBER3} {
@@ -218,7 +216,9 @@ comentario_simple \#.*
 "{"		{ return LETFCURLYBRACKET; } 	/* NEW in example 17 */
 
 "}"		{ return RIGHTCURLYBRACKET; }	/* NEW in example 17 */
-"||"	{ return CONCATENATION; }	
+"||"	{ return CONCATENATION; }
+
+
 
 
 

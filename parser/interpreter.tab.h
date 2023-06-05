@@ -79,7 +79,7 @@ extern int yydebug;
     OR = 285,
     AND = 286,
     CLEARSCREEN = 287,
-    PLACE = 288,
+    PLACE_T = 288,
     LETFCURLYBRACKET = 289,
     RIGHTCURLYBRACKET = 290,
     ASSIGNMENT = 291,

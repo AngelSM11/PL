@@ -1123,7 +1123,7 @@ bool lp::NotNode::evaluateBool()
 
 void lp::ConcatenationNode::printAST()
 {
-  std::cout << "StringNode: and" << std::endl;
+  std::cout << "StringNode: Concatenation" << std::endl;
   std::cout << "\t"; 
 	this->_left->printAST();
 	std::cout << "\t"; 
@@ -1449,7 +1449,6 @@ void lp::PrintStringStmt::printAST()
 {
   std::cout << "printStringStmt: printAST"  << std::endl;
   std::cout << "\t";
-  this->_exp->printAST();
   std::cout << std::endl;
 }
 
@@ -1457,21 +1456,30 @@ void lp::PrintStringStmt::printAST()
 void lp::PrintStringStmt::evaluate() 
 {
 	std::string var= this->_exp->evaluateCadena();
-	
-	for(size_t i=0;i<var.size();i++){
-		if(var[i]=='\\' and var[i+1]=='n'){
-			std::cout<<"\n";
-			i++;
-		}
-		else if(var[i]=='\\' and var[i+1]=='t'){
-			std::cout<<"\t";
-			i++;
-		}
-		else{
-			std::cout<<var[i];
-		}
+	if(_exp->getType()==CADENA){
+		/* for (size_t i = 0; i< var.size(); ++index)
+        {
+            if (var[i] == '\\' and var[i] == 'n')
+            {
+                std::cout << "\n";
+                ++i;
+            }
+
+            else if (var[i] == '\\' and var[i + 1] == 't')
+            {
+                std::cout << "\t";
+                ++i;
+            }
+
+            else
+                std::cout << var[i];
+        } */
+		std::cout<<_exp;
+		std::cout<<std::endl;
 	}
-	
+	else{
+		std::cout<<"NO ES UNA CADENA SUPUESTAMENTE";
+	}
 
 }
 
@@ -1713,21 +1721,19 @@ void lp::ForStmt::evaluate()
     step = (this->_step != NULL) ? this->_step->evaluateNumber() : 1.0;
 
     if (((start > end) && (step > 0)) || ((start < end) && (step < 0))) {
-        warning("Runtime error: step would cause overflow for", "For");
+        warning("Runtime error: overflow for", "For");
        
     }
 
 
-    if (std::abs(step) < ERROR_BOUND) {
-        ;
-    }
+    if (table.lookupSymbol(this->_iterator)){
+		table.eraseSymbol(this->_iterator);
+	}
+        
 
-    if (table.lookupSymbol(this->_iterator))
-        table.eraseSymbol(this->_iterator);
+    NumericVariable* var = new NumericVariable(this->_iterator, VARIABLE, NUMBER, start);
 
-    NumericVariable* var = new NumericVariable(this->_iterator, VARIABLE, NUMBER, start); //Creating and initializing the loop variable
-
-    table.installSymbol(var); //Adding it to symbol table
+    table.installSymbol(var);
 
     if (step >= 0) {
         while (var->getValue() <= end) {
@@ -1828,7 +1834,7 @@ void lp::BlockCaseNode::evaluate()
 {
     int type = this->_exp->getType();
     std::list<ValueNode *>::iterator valueIter;
-    bool aux= false;
+    bool aux= false; //VARIABLE QUE COMPRUEBA SI ENTRA EN ALUN TIPO PERMITIDO
 
     for (valueIter = this->_cases->begin(); valueIter != this->_cases->end(); valueIter++)
     {
@@ -1856,6 +1862,16 @@ void lp::BlockCaseNode::evaluate()
             }
             break;
 
+			case CADENA:
+            {
+               if ((*valueIter)->getExp()->evaluateCadena() == this->_exp->evaluateCadena())
+                {
+                    (*valueIter)->evaluate();
+					aux=true;
+                }
+            }
+            break;
+
 
             default:
                 warning("Runtime error: incompatible types for ", "valor");
@@ -1869,6 +1885,8 @@ void lp::BlockCaseNode::evaluate()
 
 		
     }
+
+	//SI no ha entrado en ningun tipo y el caso default es nulo
 	if(aux==false && _dCase!=NULL){
 		_dCase->evaluate();
 	}
@@ -1936,10 +1954,8 @@ void lp::AST::evaluate()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 void lp::Delete_WindowStmt::printAST()
-{
-	std::cout << BCYAN << ITALIC;
+{	
 	std::cout << "Delete_WindowStmt: ";
-	std::cout << RESET;
 	std::cout << "\n" <<std::endl;
 }
 
@@ -1956,16 +1972,22 @@ void lp::PlaceStmt::printAST()
     std::cout << "PlaceStmt: print" << std::endl;
     std::cout << "\t";
     this->_expX->printAST();
+	std::cout << "\t";
     this->_expY->printAST();
     std::cout << std::endl;
 }
 
 void lp::PlaceStmt::evaluate()
 {
-    if (this->_expX->getType() != NUMBER or this->_expY->getType() != NUMBER){
-		printf("Error");
+    if (this->_expX->getType() != NUMBER ){
+		std::cout<<"Error";
+		std::cout << std::endl;
+		
 	}
        
-
+	if(this->_expY->getType() != NUMBER){
+		std::cout<<"Error";
+		std::cout << std::endl;
+	}
     PLACE((int)this->_expX->evaluateNumber(), (int)this->_expY->evaluateNumber());
 }
