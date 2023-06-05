@@ -13,7 +13,7 @@ read(dato);
 
 print_string('El número introducido es -> ');
 print(dato);
-
+read_string(pausa);
 print_string('Introduce una cadena de caracteres --> ');
 read_string(dato);
 

@@ -238,7 +238,9 @@ void lp::CadenaNode::printAST()
 
 std::string lp::CadenaNode::evaluateCadena() 
 { 
-	return this->_id;
+
+	//std::cout<< "Valor de la cadena en CadenaNode: " << this->_id << std::endl;
+ 	return this->_id;
 
 }
 
@@ -1138,7 +1140,7 @@ std::string lp::ConcatenationNode::evaluateCadena()
 	{
 		std::string left, right;
 
-		left = this->_right->evaluateCadena();
+		left = this->_left->evaluateCadena();
 		right = this->_right->evaluateCadena();
 
 		result = left +right;
@@ -1147,7 +1149,7 @@ std::string lp::ConcatenationNode::evaluateCadena()
 	{
 		warning("Runtime error: incompatible types of parameters for ", "operator Concatenation");
 	}
-
+	
 	return result;
 }
 
@@ -1420,9 +1422,7 @@ void lp::PrintStmt::printAST()
 
 void lp::PrintStmt::evaluate() 
 {
-	std::cout << BIYELLOW; 
-	std::cout << "print: ";
-	std::cout << RESET; 
+	
 
 	switch(this->_exp->getType())
 	{
@@ -1455,9 +1455,20 @@ void lp::PrintStringStmt::printAST()
 
 void lp::PrintStringStmt::evaluate() 
 {
-	std::string var= this->_exp->evaluateCadena();
-	if(_exp->getType()==CADENA){
-		/* for (size_t i = 0; i< var.size(); ++index)
+
+
+		//std::cout<<"Dentro de evaluate de PrintStmt paso 1 " << std::endl;
+
+/*
+	std::string var;
+	var = this->_exp->evaluateCadena();
+
+		std::cout<<"Cadena en evaluate de PrintStringStmt " << var << std::endl;
+*/
+	if(this->_exp->getType()==CADENA){
+
+		/*
+		for (size_t i = 0; i< var.size(); ++i)
         {
             if (var[i] == '\\' and var[i] == 'n')
             {
@@ -1473,12 +1484,12 @@ void lp::PrintStringStmt::evaluate()
 
             else
                 std::cout << var[i];
-        } */
-		std::cout<<_exp;
-		std::cout<<std::endl;
+        } 
+		*/
+		std::cout<< this->_exp->evaluateCadena()<<std::endl;
 	}
 	else{
-		std::cout<<"NO ES UNA CADENA SUPUESTAMENTE";
+		std::cout<<"NO ES UNA CADENA ";
 	}
 
 }
@@ -1498,9 +1509,7 @@ void lp::ReadStmt::printAST()
 void lp::ReadStmt::evaluate() 
 {   
 	double value;
-	std::cout << BIYELLOW; 
-	std::cout << "Insert a numeric value --> " ;
-	std::cout << RESET; 
+	
 	std::cin >> value;
 
 	/* Get the identifier in the table of symbols as Variable */
@@ -1682,7 +1691,7 @@ void lp::RepeatStmt::evaluate()
   do{
   
 	  this->_stmt->evaluate();
-  }while(this->_cond->evaluateBool() == true);
+  }while(this->_cond->evaluateBool() == false);
 
 }
 

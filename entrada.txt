@@ -1,5 +1,5 @@
-dato:= 'r' || '1';
 
+read_string(dato);
 print_string(dato);
 
-place(30,40);
+

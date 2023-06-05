@@ -198,6 +198,7 @@ class ConstantNode : public ExpNode
 		\sa		   getType, printAST, evaluateNumber, evaluateBool
 	*/
 	  bool evaluateBool();
+
 };
 
 
@@ -1836,6 +1837,49 @@ class EmptyStmt : public Statement
 
 
 
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+// NEW in example 17
+
+/*!	
+  \class   BlockStmt
+  \brief   Definition of atributes and methods of BlockStmt class
+  \note    BlockStmt Class publicly inherits from Statement class 
+		       and adds its own printAST and evaluate functions
+*/
+class BlockStmt : public Statement 
+{
+ private:
+   std::list<Statement *> *_stmts;  //!< List of statements
+
+  public:
+/*!		
+	\brief Constructor of  WhileStmt
+	\param stmtList: list of Statement
+	\post  A new BlockStmt is created with the parameters
+*/
+  BlockStmt(std::list<Statement *> *stmtList): _stmts(stmtList)
+	{
+		// Empty
+	}
+
+
+/*!
+	\brief   Print the AST for BlockStmt
+	\return  void
+	\sa		   evaluate
+*/
+  void printAST();
+
+/*!	
+	\brief   Evaluate the BlockStmt
+	\return  void
+	\sa	   	 printAST
+*/
+  void evaluate();
+};
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // NEW in example 17
@@ -1850,8 +1894,8 @@ class IfStmt : public Statement
 {
  private:
   ExpNode *_cond;    //!< Condicion of the if statement
-  Statement *_stmt1; //!< Statement of the consequent
-  Statement *_stmt2; //!< Statement of the alternative
+  BlockStmt *_stmt1; //!< Statement of the consequent
+  BlockStmt *_stmt2; //!< Statement of the alternative
 
   public:
 /*!		
@@ -1860,10 +1904,10 @@ class IfStmt : public Statement
 	\param statement1: Statement of the consequent
 	\post  A new IfStmt is created with the parameters
 */
-  IfStmt(ExpNode *condition, Statement *statement1)
+  IfStmt(ExpNode *condition,std::list<Statement*> *statement1)
 	{
 		this->_cond = condition;
-		this->_stmt1 = statement1;
+		this->_stmt1 =new BlockStmt(statement1);
 		this->_stmt2 = NULL;
 	}
 
@@ -1875,11 +1919,11 @@ class IfStmt : public Statement
 	\param statement2: Statement of the alternative
 	\post  A new IfStmt is created with the parameters
 */
-  IfStmt(ExpNode *condition, Statement *statement1, Statement *statement2)
+  IfStmt(ExpNode *condition, std::list<Statement*> *statement1, std::list<Statement*> *statement2)
 	{
 		this->_cond = condition;
-		this->_stmt1 = statement1;
-		this->_stmt2 = statement2;
+		this->_stmt1 =new BlockStmt(statement1);
+		this->_stmt2 =new BlockStmt(statement2);
 	}
 
 
@@ -1899,9 +1943,6 @@ class IfStmt : public Statement
 };
 
 
-
-
-
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // NEW in example 17
@@ -1916,7 +1957,7 @@ class WhileStmt : public Statement
 {
  private:
   ExpNode *_cond; //!< Condicion of the while statement
-  Statement *_stmt; //!< Statement of the body of the while loop
+  BlockStmt *_stmt; //!< Statement of the body of the while loop
 
   public:
 /*!		
@@ -1925,10 +1966,10 @@ class WhileStmt : public Statement
 	\param statement: Statement of the body of the loop 
 	\post  A new WhileStmt is created with the parameters
 */
-  WhileStmt(ExpNode *condition, Statement *statement)
+  WhileStmt(ExpNode *condition, std::list<Statement*> *statement)
 	{
 		this->_cond = condition;
-		this->_stmt = statement;
+		this->_stmt =new BlockStmt(statement);
 	}
 
 
@@ -1962,7 +2003,7 @@ class RepeatStmt: public Statement
 {
  private:
   ExpNode *_cond; //!< Condicion of the RepeatStmt
-  Statement *_stmt; //!< Statement of the body of the while loop
+  BlockStmt *_stmt; //!< Statement of the body of the while loop
 
   public:
 /*!		
@@ -1971,10 +2012,10 @@ class RepeatStmt: public Statement
 	\param statement: Statement of the body of the loop 
 	\post  A new WhileStmt is created with the parameters
 */
-  RepeatStmt(ExpNode *condition, Statement *statement)
+  RepeatStmt(ExpNode *condition, std::list<Statement*> *statement)
 	{
 		this->_cond = condition;
-		this->_stmt = statement;
+		this->_stmt =new BlockStmt( statement);
 	}
 
 
@@ -2007,7 +2048,7 @@ class ForStmt : public Statement
  private:
     char* _iterator;
     ExpNode *_start, *_step, *_end;
-    Statement* _statement;
+    BlockStmt* _statement;
 
   public:
 /*!		
@@ -2016,21 +2057,21 @@ class ForStmt : public Statement
 	\param statement: Statement of the body of the loop 
 	\post  A new ForStmt is created with the parameters
 */
-    ForStmt(char* iterator, ExpNode* start, ExpNode* end, Statement* statement)
+    ForStmt(char* iterator, ExpNode* start, ExpNode* end, std::list<Statement*>* statement)
     {
         this->_iterator = iterator;
         this->_start = start;
         this->_end = end;
-        this->_statement = statement;
+        this->_statement =new BlockStmt(statement);
     }
 
-    ForStmt(char* iterator, ExpNode* start, ExpNode* end, ExpNode* step, Statement* statement)
+    ForStmt(char* iterator, ExpNode* start, ExpNode* end, ExpNode* step, std::list<Statement*>* statement)
     {
         this->_iterator = iterator;
         this->_start = start;
         this->_step = step;
         this->_end = end;
-        this->_statement = statement;
+        this->_statement =new BlockStmt(statement);
     }
 
 /*!
@@ -2199,47 +2240,7 @@ class ForStmt : public Statement
         void evaluate();
     };
 
-///////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////
-// NEW in example 17
 
-/*!	
-  \class   BlockStmt
-  \brief   Definition of atributes and methods of BlockStmt class
-  \note    BlockStmt Class publicly inherits from Statement class 
-		       and adds its own printAST and evaluate functions
-*/
-class BlockStmt : public Statement 
-{
- private:
-   std::list<Statement *> *_stmts;  //!< List of statements
-
-  public:
-/*!		
-	\brief Constructor of  WhileStmt
-	\param stmtList: list of Statement
-	\post  A new BlockStmt is created with the parameters
-*/
-  BlockStmt(std::list<Statement *> *stmtList): _stmts(stmtList)
-	{
-		// Empty
-	}
-
-
-/*!
-	\brief   Print the AST for BlockStmt
-	\return  void
-	\sa		   evaluate
-*/
-  void printAST();
-
-/*!	
-	\brief   Evaluate the BlockStmt
-	\return  void
-	\sa	   	 printAST
-*/
-  void evaluate();
-};
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////

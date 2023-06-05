@@ -1,9 +1,17 @@
-dato:=1;
-case( dato )
-    value 1:
-        print (dato);
-    value 4:
-        print (34);
-    default: 
-        print (3);
-end_case;
+r:=3;
+print(r);
+print_string('hola');
+
+while (r != 0) do
+
+    if(r>2) then
+        print_string('hola');
+    else
+        print_string('adios');
+    end_if
+	# Cociente de la división entera
+       r:=r-1;
+       print(r);
+end_while;
+
+print(r);

@@ -189,8 +189,6 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 %token REPEAT UNTIL FOR FROM ENDFOR STEP TO 
 %token CASE VALUE DEFAULT ENDCASE
 %token COMENTARIO COMENTARIOSIMPLE
-%token CONCATENATION
-%token NOT OR AND
 %token CLEARSCREEN PLACE_T
 
 /* NEW in example 17 */
@@ -200,6 +198,7 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 %right ASSIGNMENT
 
 /* NEW in example 14 */
+
 %token COMMA COLON
 
 /*******************************************/
@@ -223,7 +222,12 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 
 %nonassoc GREATER_OR_EQUAL LESS_OR_EQUAL GREATER_THAN LESS_THAN  EQUAL NOT_EQUAL
 
-%left NOT AND OR
+%left OR
+
+%left AND 
+
+%left NOT
+
 
 /*******************************************************/
 
@@ -231,7 +235,7 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 %left PLUS MINUS 
 
 /* MODIFIED in example 5 */
-%left MULTIPLICATION DIVISION DIVISION_ENTERA MODULO
+%left MULTIPLICATION DIVISION DIVISION_ENTERA MODULO CONCATENATION
 
 %left LPAREN RPAREN
 
@@ -405,7 +409,7 @@ controlSymbol:  /* Epsilon rule*/
 
 	/*  NEW in example 17 */
 if:	/* Simple conditional statement */
-	IF controlSymbol cond THEN stmt ENDIF
+	IF controlSymbol cond THEN stmtlist ENDIF
     {
 		// Create a new if statement node
 		$$ = new lp::IfStmt($3, $5);
@@ -415,7 +419,7 @@ if:	/* Simple conditional statement */
 	}
 
 	/* Compound conditional statement */
-	| IF controlSymbol cond THEN stmt  ELSE stmt ENDIF
+	| IF controlSymbol cond THEN stmtlist  ELSE stmtlist ENDIF
 	 {
 		// Create a new if statement node
 		$$ = new lp::IfStmt($3, $5, $7);
@@ -426,17 +430,17 @@ if:	/* Simple conditional statement */
 ;
 
 	/*  NEW in example 17 */
-while:  WHILE controlSymbol cond stmt ENDWHILE
+while:  WHILE controlSymbol cond DO stmtlist ENDWHILE
 		{
 			// Create a new while statement node
-			$$ = new lp::WhileStmt($3, $4);
+			$$ = new lp::WhileStmt($3, $5);
 
 			// To control the interactive mode
 			control--;
     }
 ;
 
-repeat:  REPEAT stmt UNTIL controlSymbol cond 
+repeat:  REPEAT stmtlist UNTIL controlSymbol cond 
 		{
 			// Create a new repeat statement node
 			$$ = new lp::RepeatStmt($5, $2);
@@ -446,13 +450,13 @@ repeat:  REPEAT stmt UNTIL controlSymbol cond
     }
 ;
 
-for:	FOR controlSymbol VARIABLE FROM exp TO exp DO stmt ENDFOR
+for:	FOR controlSymbol VARIABLE FROM exp TO exp DO stmtlist ENDFOR
 		{
 			$$ = new lp::ForStmt($3, $5, $7, $9);
 
 			control --;
 		}
-	|   FOR controlSymbol VARIABLE FROM exp TO exp STEP exp DO stmt ENDFOR
+	|   FOR controlSymbol VARIABLE FROM exp TO exp STEP exp DO stmtlist ENDFOR
 		{
 			$$ = new lp::ForStmt($3, $5, $7, $9, $11);
 
@@ -529,14 +533,12 @@ asgn:   VARIABLE ASSIGNMENT exp
 
 	| CADENA ASSIGNMENT exp 
 		{ 
-			// Create a new assignment node
-			$$ = new lp::AssignmentStmt($1, $3);
+			execerror("Semantic error in assignment: it is not allowed to modify a string ", $1);
 		}
 
 	|  CADENA ASSIGNMENT asgn 
 		{ 
-			// Create a new assignment node
-			$$ = new lp::AssignmentStmt($1, (lp::AssignmentStmt *) $3);
+			execerror("Semantic error in assignment: it is not allowed to modify a string ", $1);
 		}
 	   /* NEW in example 11 */ 
 	| CONSTANT ASSIGNMENT exp 
@@ -599,15 +601,21 @@ exp:	NUMBER
 	| CADENA
 		{
 		  // Create a new cadena node	
+		  //printf(" Valor de cadena en exp -> CADENA : %s\n",$1);
 		  $$ = new lp::CadenaNode($1);
 		}
-
+	| exp CONCATENATION exp
+				{
+					$$ = new lp::ConcatenationNode($1,$3);
+				}
+			
 
 	| 	exp PLUS exp 
 		{ 
 			// Create a new plus node
 			 $$ = new lp::PlusNode($1, $3);
 		 }
+		 
 
 	| 	exp MINUS exp
       	{
@@ -684,11 +692,7 @@ exp:	NUMBER
 					$$ = new lp::OrNode($1,$3);
 				}
 
-	| exp CONCATENATION exp
-				{
-					$$ = new lp::ConcatenationNode($1,$3);
-				}
-		
+
 	| NOT exp 
 				{
 				// Create a new "logic negation" node	

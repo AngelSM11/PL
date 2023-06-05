@@ -121,6 +121,17 @@ comentario_simple \#.*
 		}
 
 {CADENA} {
+	
+
+			/* NEW in example 7 */
+						 std::string identifier(yytext);
+
+			/* 
+                          strdup() function returns a pointer to a new string 
+                          which  is a duplicate of the string yytext
+             */
+			 yylval.string =  strdup(yytext);
+
 	return CADENA;
 }
 
@@ -200,9 +211,9 @@ comentario_simple \#.*
 ":=" 	{ return ASSIGNMENT; }		/* NEW in example 7 */
 
 
-"=="	{ return EQUAL; }			/* NEW in example 15 */
+"="	{ return EQUAL; }			/* NEW in example 15 */
 
-"!="	{ return NOT_EQUAL; }		/* NEW in example 15 */
+"<>"	{ return NOT_EQUAL; }		/* NEW in example 15 */
 
 ">="	{ return GREATER_OR_EQUAL; }/* NEW in example 15 */
 
